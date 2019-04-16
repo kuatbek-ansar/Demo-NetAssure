@@ -1,0 +1,17 @@
+{
+  "swagger": {
+    "outputDirectory": "./docs",
+    "entryFile": "./app.ts",
+    "host": "localhost:5050",
+    "version": "1.0",
+    "name": "Network Assure REST API",
+    "description": "This is the backend for Affiniti's Network Assure.",
+    "securityDefinitions": {
+      "bearer": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "headers"
+      }
+    }
+  }
+}

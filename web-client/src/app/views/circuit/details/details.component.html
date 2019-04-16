@@ -1,0 +1,66 @@
+<div class="animated fadeIn">
+  <div *ngIf="!isLoading">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            Circuit Performance
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12" style="display: block">
+                <canvas baseChart *ngIf="!isLoading" class="chart" [datasets]="model.predictiveData.data" [labels]="model.predictiveData.labels"
+                  [colors]="colors" [options]="chartOptions" chartType="line" height="400px"></canvas>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Low</th>
+                      <th>Average</th>
+                      <th>High</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Bit Sent</td>
+                      <td>{{model.lowBitsSent}}</td>
+                      <td>{{model.averageBitsSent}}</td>
+                      <td>{{model.highBitsSent}}</td>
+                    </tr>
+                    <tr>
+                      <td>Bit Received</td>
+                      <td>{{model.lowBitsReceived}}</td>
+                      <td>{{model.averageBitsReceived}}</td>
+                      <td>{{model.highBitsReceived}}</td>
+                    </tr>
+                    <tr>
+                      <td>Total</td>
+                      <td>{{model.lowBitsReceived + model.lowBitsSent}}</td>
+                      <td>{{model.averageBitsReceived + model.averageBitsSent}}</td>
+                      <td>{{model.highBitsReceived + model.highBitsSent}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-md-6">
+                <div class="row" *ngIf="model.willBreachSLA">
+                  <div class="col-md-2">
+                    <i class="fa fa-warning fa-3x mt-4"></i>
+                  </div>
+                  <div class="col-md-10" style="margin-top: 20px">
+                    If the current trend continues you will reach the throughput SLA of your circuit in {{model.willBreachSLAIn}}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

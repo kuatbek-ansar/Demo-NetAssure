@@ -1,0 +1,17 @@
+<div class="card" *ngIf="!viewingDetails">
+  <div class="card-body text-center">
+    <div class="text-muted text-uppercase font-weight-bold">Application Analysis Over Last Hour</div>
+    <app-widget-loading [isLoading]="isLoading"></app-widget-loading>
+    <canvas baseChart *ngIf="!isLoading" class="chart" [data]="model.data" [labels]="model.labels" [colors]="colors" chartType="pie"
+      (chartClick)="click($event)"></canvas>
+  </div>
+</div>
+<div class="card" *ngIf="viewingDetails">
+  <div class="card-body text-center">
+    <div class="text-muted text-uppercase font-weight-bold">Source Devices for {{selectedProtocol}}</div>
+    <app-widget-loading [isLoading]="isLoading"></app-widget-loading>
+    <canvas baseChart *ngIf="!isLoading" class="chart" [data]="model.details.data" [labels]="model.details.labels" [colors]="colors"
+      chartType="pie"></canvas>
+  </div>
+  <a (click)="back()" *ngIf="!isLoading">&lt; Back</a>
+</div>

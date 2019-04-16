@@ -1,0 +1,86 @@
+<app-widget-loading [isLoading]="isLoading"></app-widget-loading>
+<div class="animated fadeIn">
+  <app-no-data *ngIf="!isLoading" [dataExists]="notifications?.length > 0" message="notifications">
+  </app-no-data>
+  <div class="row justify-content-center mb-3" *ngIf="notifications?.length > 0">
+    <div class="row col-lg-12" *ngIf="!isLoading">
+      <progressbar class="progress" [value]="notificationsProgress" [max]="100"></progressbar>
+    </div>
+  </div>
+  <div class="card" [hidden]="isLoading && !(notifications?.length > 0)">
+    <div class="card-body">
+      <p-table id="notifications" [value]="notifications" [rows]="10" sortField="lastChangeDateStamp" [sortOrder]="-1" [responsive]="true"
+        [paginator]="notifications?.length > 10 && notifications?.length !== 1" #dt>
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 12%" pSortableColumn="hasProblem">Problem
+              <p-sortIcon field="hasProblem"></p-sortIcon>
+            </th>
+            <th style="width: 10%" pSortableColumn="hostName">Host
+              <p-sortIcon field="hostName"></p-sortIcon>
+            </th>
+            <th style="width: 20%" pSortableColumn="name">Name
+              <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th style="width: 15%" pSortableColumn="lastChange">Last Changed
+              <p-sortIcon field="lastChange"></p-sortIcon>
+            </th>
+            <th style="width: 10%" pSortableColumn="severity">Severity
+              <p-sortIcon field="severity"></p-sortIcon>
+            </th>
+            <th style="width: 20%" pSortableColumn="comments">Comments
+              <p-sortIcon field="comments"></p-sortIcon>
+            </th>
+          </tr>
+          <tr>
+            <th>
+              <p-dropdown [options]="statusFilter" [style]="{'width':'100%'}" [(ngModel)]="statusFilterValue" (onChange)="onProblemFilter($event.value, 'hasProblem', 'equals')"
+                styleClass="ui-column-filter"></p-dropdown>
+            </th>
+            <th>
+              <input pInputText type="text" (input)="dt.filter($event.target.value, 'hostName', 'contains')">
+            </th>
+            <th>
+              <input pInputText type="text" (input)="dt.filter($event.target.value, 'name', 'contains')">
+            </th>
+            <th>
+              <p-calendar [(ngModel)]="dateFilter" [style]="{'width':'100%'}" [disabledDates]="dateFilterDisabledDates" showButtonBar="true"
+                (onSelect)="onDateFilter(dateFilter, 'lastChangeDateStamp', 'equals')" (onClearClick)="dt.filter(null, 'lastChangeDateStamp', 'equals');"
+                readonlyInput="true"></p-calendar>
+            </th>
+            <th>
+              <p-dropdown [options]="severetyFilter" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, 'severity', 'equals')"
+                styleClass="ui-column-filter"></p-dropdown>
+            </th>
+            <th>
+              <input pInputText type="text" (input)="dt.filter($event.target.value, 'comments', 'contains')">
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td class="text-center">
+              <span class="has-problem-{{item.hasProblem}}">
+                <i class="fa fa-2x" [ngClass]="{'fa-check': !item.hasProblem, 'fa-ban': item.hasProblem}"></i>
+              </span>
+            </td>
+            <td>
+              {{item.hostName}}
+            </td>
+            <td>
+              {{item.name}}
+            </td>
+            <td class="text-center">
+              {{formatDate(item.lastChange)}}
+            </td>
+            <td>
+              <span class="text-center severity-{{item.severity}}">{{item.severity | titlecase }}</span>
+            </td>
+            <td>{{item.comments}}</td>
+          </tr>
+        </ng-template>
+
+      </p-table>
+    </div>
+  </div>
+</div>

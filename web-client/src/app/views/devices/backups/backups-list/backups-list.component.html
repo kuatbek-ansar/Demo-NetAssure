@@ -1,0 +1,92 @@
+<div class="card" *ngIf="!isLoading">
+  <div class="card-header">
+    <span *ngIf="!backups">No</span> Existing Backups
+  </div>
+  <div class="card-body" *ngIf="backups?.length > 0">
+    <p-table id="backups" [value]="backups" [rows]="10" [responsive]="true"
+             [paginator]="backups?.length > 10 && backups?.length !== 1"
+             #dt>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 55px"></th>
+          <th style="width: 35px"></th>
+          <th style="width: 35px"></th>
+          <th pSortableColumn="lastModified">Age
+            <p-sortIcon field="lastModified"></p-sortIcon>
+          </th>
+          <th pSortableColumn="size">Size
+            <p-sortIcon field="size"></p-sortIcon>
+          </th>
+          <th pSortableColumn="lastModified">Created On
+            <p-sortIcon field="lastModified"></p-sortIcon>
+          </th>
+        </tr>
+        <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th>
+            <p-calendar [(ngModel)]="dateFilter" [style]="{'width':'100%'}" showButtonBar="true"
+                        [disabledDates]="dateFilterDisabledDates"
+                        (onSelect)="onDateFilter(dateFilter, 'lastModifiedDateStamp', 'equals')"
+                        (onClearClick)="dt.filter(null, 'lastModifiedDateStamp', 'equals');"
+                        readonlyInput="true"></p-calendar>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item>
+        <tr>
+          <td>
+            <button type="button" class="btn btn-success" (click)="download(item)" title="Download">
+              <i class="icon-cloud-download icons"></i>
+            </button>
+          </td>
+          <td>
+            <input type="radio" name="sourceFile" [(ngModel)]="sourceFile" [value]="item.versionId"/>
+          </td>
+          <td>
+            <input type="radio" name="destinationFile" [(ngModel)]="destinationFile" [value]="item.versionId"/>
+          </td>
+          <td>
+            {{item.lastModified | timeAgo}}
+          </td>
+          <td>
+            {{item.size | number}} bytes
+          </td>
+          <td>
+            {{item.lastModified | date: 'medium'}}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <button class="btn btn-success" (click)="compare(diffModal)" [disabled]="sourceFile === destinationFile">Compare
+    </button>
+  </div>
+</div>
+
+<!-- .modal -->
+<ng-template #diffModal>
+
+
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Diff</h4>
+      <button type="button" class="close" (click)="closeDiff()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <span *ngFor="let line of parts">
+          <pre [class]="line.added ? 'added' : line.removed ? 'removed': ''">{{line.value.trim()}}</pre>
+        </span>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-success" (click)="closeDiff()">Close</button>
+    </div>
+  </div>
+
+
+</ng-template>
+<!-- /.modal -->

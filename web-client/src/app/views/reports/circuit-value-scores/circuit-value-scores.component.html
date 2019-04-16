@@ -1,0 +1,50 @@
+<app-widget-loading [isLoading]="isLoading"></app-widget-loading>
+<div *ngIf="!isLoading">
+  <h2>Circuit Value Scores</h2>
+  <p-table [value]="model" #dt1 exportFilename="circuitValueScores" [columns]="cols">
+    <ng-template pTemplate="caption">
+        <div class="ui-helper-clearfix">
+            <button type="button" pButton icon="fa-file-o" iconPos="left" label="Export to CSV" (click)="dt1.exportCSV()" style="float:left"></button>
+          </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="max-width: 450px">Circuit</th>
+        <th class="number-column">Score</th>
+        <th class="number-column">Market</th>
+        <th class="number-column">Packet Loss</th>
+        <th class="number-column">Latency</th>
+        <th class="number-column">Uptime</th>
+        <th class="number-column">Send Utilization</th>
+        <th class="number-column">Receive Utilization</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-data>
+      <tr>
+        <td><a [routerLink]="['/devices', data.host_id]">{{data.name}}</a></td>
+        <td class="text-right">{{ data.valueScore }}</td>
+        <td class="text-right">{{ data.valueMetrics.market | number:'1.0-0' }}</td>
+        <td class="text-right">{{ data.valueMetrics.packetLoss | number:'1.0-0' }}</td>
+        <td class="text-right">{{ data.valueMetrics.latency | number:'1.0-0' }}</td>
+        <td class="text-right">{{ data.valueMetrics.uptime | number:'1.0-0' }}</td>
+        <td class="text-right">{{ data.valueMetrics.utilizationSend | number:'1.0-0' }}</td>
+        <td class="text-right">{{ data.valueMetrics.utilizationReceive | number:'1.0-0' }}</td>
+        <td></td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <tr>
+        <td class="text-right">Average:</td>
+        <td class="text-right">{{averageValueScore()}}</td>
+        <td class="text-right">{{averageMetrics.market}}</td>
+        <td class="text-right">{{averageMetrics.packetLoss}}</td>
+        <td class="text-right">{{averageMetrics.latency}}</td>
+        <td class="text-right">{{averageMetrics.uptime}}</td>
+        <td class="text-right">{{averageMetrics.utilizationSend}}</td>
+        <td class="text-right">{{averageMetrics.utilizationReceive}}</td>
+        <td></td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

@@ -1,0 +1,34 @@
+<app-widget-loading [isLoading]="isLoading"></app-widget-loading>
+<div *ngIf="!isLoading">
+  <h2>Managed Devices History</h2>
+  <p-table [value]="model" [rows]="10" #dt exportFilename="managedDevicesHistory" [columns]="cols">
+    <ng-template pTemplate="caption">
+      <div class="ui-helper-clearfix">
+        <button type="button" pButton icon="fa-file-o" iconPos="left" label="Export to CSV" (click)="dt.exportCSV()" style="float:left"></button>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Name</th>
+        <th>Managed Turned On</th>
+        <th>Currently Managed</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-data>
+      <tr>
+        <td>
+          <a [routerLink]="['/devices', data.host_id]">{{data.hostname}}</a>
+        </td>
+        <td>
+          {{data.mostRecentActivation|date}}
+        </td>
+        <td>
+          <div class="text-center">
+            <span *ngIf="data.isManaged" class="badge badge-pill badge-success">&nbsp;</span>
+            <span *ngIf="!data.isManaged" class="badge badge-pill badge-danger">&nbsp;</span>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

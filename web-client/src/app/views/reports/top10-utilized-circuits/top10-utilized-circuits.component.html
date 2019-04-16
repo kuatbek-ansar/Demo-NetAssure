@@ -1,0 +1,66 @@
+<app-widget-loading [isLoading]="isLoading"></app-widget-loading>
+<div *ngIf="!isLoading">
+  <h2>Upstream Utilization</h2>
+  <p-table #dt1 [value]="upstream" [rows]="10" [columns]="upstreamCols" exportFilename="top10Upstream">
+    <ng-template pTemplate="caption">
+      <tr>
+        <button type="button" pButton icon="fa-file-o" iconPos="left" label="Export to CSV" (click)="dt1.exportCSV()" style="float:left"></button>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Host</th>
+        <th>Interface</th>
+        <th>Display Name</th>
+        <th>Sent (mbits)</th>
+        <th>Capacity (mbits)</th>
+        <th>Utilization</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-data>
+      <tr>
+        <td>
+          <a [routerLink]="['/devices', data.hostid]">{{data.hostname}}</a>
+        </td>
+        <td>{{data.name}}</td>
+        <td>{{data.circuit.name}}</td>
+        <td>{{data.bitsSent/(1000*1000)| number : '1.2-2'}}</td>
+        <td>{{data.speed/(1000*1000)}}</td>
+        <td>{{data.upstreamUtilization | percent}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <br />
+
+  <h2>Downstream Utilization</h2>
+  <p-table #dt2 [value]="downstream" [rows]="10" [columns]="downstreamCols" exportFilename="top10Downstream">
+      <ng-template pTemplate="caption">
+        <tr>
+          <button type="button" pButton icon="fa-file-o" iconPos="left" label="Export to CSV" (click)="dt2.exportCSV()" style="float:left"></button>
+        </tr>
+      </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Host</th>
+        <th>Interface</th>
+        <th>Display Name</th>
+        <th>Sent (mbits)</th>
+        <th>Capacity (mbits)</th>
+        <th>Utilization</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-data>
+      <tr>
+        <td>
+          <a [routerLink]="['/devices', data.hostid]">{{data.hostname}}</a>
+        </td>
+        <td>{{data.name}}</td>
+        <td>{{data.circuit.name}}</td>
+        <td>{{data.bitsSent/(1000*1000)| number : '1.2-2'}}</td>
+        <td>{{data.speed/(1000*1000)}}</td>
+        <td>{{data.downstreamUtilization | percent}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

@@ -1,0 +1,31 @@
+i.success {
+  color: green;
+}
+
+i.error {
+  color: red;
+}
+
+i.fa-upload {
+  position: relative;
+  left: 20px
+}
+
+span.cancel {
+  color: red;
+}
+
+.fileUpload {
+  position: relative;
+  overflow: hidden;
+}
+
+.fileUpload input.upload {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  width: 50px;
+}

@@ -1,0 +1,195 @@
+<div class="card-body">
+  <app-widget-loading [isLoading]="!selectedDevice?.hostItems"></app-widget-loading>
+  <p-table id="interfaces" [value]="selectedDevice?.hostItems" [rows]="10" sortField="name" [sortOrder]="-1" *ngIf="selectedDevice?.hostItems"
+    [responsive]="true" [paginator]="selectedDevice?.hostItems?.length > 10 && selectedDevice?.hostItems?.length !== 1" #ifaceDT>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 20%" pSortableColumn="name">Interface Name
+          <p-sortIcon field="name"></p-sortIcon>
+        </th>
+        <th style="width: 15%" pSortableColumn="Circuit.name">Display Name
+          <p-sortIcon field="Circuit.name"></p-sortIcon>
+        </th>
+        <th style="width: 9%" pSortableColumn="IsCircuit">Circuit
+          <p-sortIcon field="IsCircuit"></p-sortIcon>
+        </th>
+        <th style="width: 15%" pSortableColumn="Circuit.vendor.name">Vendor
+          <p-sortIcon field="Circuit.vendor.name"></p-sortIcon>
+        </th>
+        <th style="width: 9%" pSortableColumn="Circuit.sla_throughput_send">Send Throughput
+          <p-sortIcon field="Circuit.sla_throughput_send"></p-sortIcon>
+        </th>
+        <th style="width: 9%" pSortableColumn="Circuit.sla_throughput_receive">Receive Throughput
+          <p-sortIcon field="Circuit.sla_throughput_receive"></p-sortIcon>
+        </th>
+        <th style="width: 8%" pSortableColumn="Circuit.cost">Cost
+          <p-sortIcon field="Circuit.cost"></p-sortIcon>
+        </th>
+        <th style="width: 5%">SLA
+        </th>
+        <th></th>
+      </tr>
+      <tr>
+        <th>
+          <input pInputText type="text" (input)="ifaceDT.filter($event.target.value, 'name', 'contains')">
+        </th>
+        <th>
+          <input pInputText type="text" (input)="ifaceDT.filter($event.target.value, 'Circuit.name', 'contains')">
+        </th>
+        <th>
+          <p-dropdown [options]="circuitFilter" [style]="{'width':'100%'}" (onChange)="ifaceDT.filter($event.value, 'IsCircuit', 'equals')"
+            styleClass="ui-column-filter"></p-dropdown>
+        </th>
+        <th>
+          <input pInputText type="text" (input)="ifaceDT.filter($event.target.value, 'Circuit.vendor.name', 'contains')">
+        </th>
+        <th>
+          <input pInputText type="text" (input)="ifaceDT.filter($event.target.value, 'Circuit.sla_throughput_send', 'contains')">
+        </th>
+        <th>
+          <input pInputText type="text" (input)="ifaceDT.filter($event.target.value, 'Circuit.sla_throughput_receive', 'contains')">
+        </th>
+        <th>
+          <input pInputText type="text" (input)="ifaceDT.filter($event.target.value, 'Circuit.cost', 'contains')">
+        </th>
+        <th>
+        </th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+      <tr>
+        <td class="text-center">
+          <span *ngIf="item.IsCircuit">
+            <a [routerLink]="['/circuits', item.Circuit.circuit_id]">{{item.name}}</a>
+          </span>
+          <span *ngIf="!item.IsCircuit">
+            {{item.name}}
+          </span>
+        </td>
+        <td>
+          {{item.Circuit?.name}}
+        </td>
+        <td class="text-center">
+          <input type="checkbox" [checked]="item.IsCircuit" (change)="onCircuitChangeClick(item, circuitEditModal, circuitDeleteModal)"
+          />
+        </td>
+        <td class="text-center">{{item.Circuit?.vendor?.name}}</td>
+        <td class="text-right">{{item.Circuit?.sla_throughput_send | number}}</td>
+        <td class="text-right">{{item.Circuit?.sla_throughput_receive | number}}</td>
+        <td class="text-right">{{item.Circuit?.cost | currency}}</td>
+        <td class="text-center">{{hasSLA(item.Circuit)}}</td>
+        <td>
+          <div *ngIf="item?.Circuit">
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" (click)="openCircuitEditModal(item,circuitEditModal,true)">Edit
+            </button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<!-- .modal -->
+<ng-template #circuitDeleteModal>
+  <div class="modal-header">
+    <h4 class="modal-title">Remove Circuit</h4>
+    <button type="button" class="close" (click)="closeCircuitDeleteModal(selectedCircuitInterface, true)" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Are you sure you want to remove this circuit?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="closeCircuitDeleteModal(selectedCircuitInterface, true)">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteCircuit(selectedCircuitInterface)">Remove
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #circuitEditModal>
+  <div class="modal-header">
+    <h4 class="modal-title">Edit Circuit</h4>
+    <button type="button" class="close" (click)="closeCircuitEditModal(selectedCircuitInterface)" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group row">
+      <label class="col-lg-4 col-md-5 col-form-label">Name</label>
+      <div class="col-lg-8 col-md-7">
+        <input class="form-control" [(ngModel)]="selectedCircuitInterface?.Circuit.name" required />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-4 col-md-5 col-form-label">Vendor</label>
+      <div class="col-lg-8 col-md-7">
+        <select *ngIf="selectedCircuitInterface?.Circuit" [compareWith]="compareVendors" [(ngModel)]="selectedCircuitInterface?.Circuit.vendor"
+          class="form-control">
+          <option *ngFor="let v of vendors" [ngValue]="v">{{v.name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-4 col-md-5 col-form-label">Cost per month ($)</label>
+      <div class="col-lg-8 col-md-7">
+        <input class="form-control" [(ngModel)]="selectedCircuitInterface?.Circuit.cost" type="number" step="0.01" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-4 col-md-5 col-form-label">Term (months)</label>
+      <div class="col-lg-8 col-md-7">
+        <input class="form-control" [(ngModel)]="selectedCircuitInterface?.Circuit.term" type="number" step="1" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-4 col-md-5 col-form-label">SLA Availability (%)</label>
+      <div class="col-lg-8 col-md-7">
+        <input class="form-control" [(ngModel)]="selectedCircuitInterface?.Circuit.sla_availability" type="number" step="0.01" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-4 col-md-5 col-form-label">SLA Send Throughput (Mbps)</label>
+      <div class="col-lg-8 col-md-7">
+        <input class="form-control" [(ngModel)]="selectedCircuitInterface?.Circuit.sla_throughput_send" type="number" step="0.01" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-4 col-md-5 col-form-label">SLA Receive Throughput (Mbps)</label>
+      <div class="col-lg-8 col-md-7">
+        <input class="form-control" [(ngModel)]="selectedCircuitInterface?.Circuit.sla_throughput_receive" type="number" step="0.01" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-4 col-md-5 col-form-label">SLA Latency (ms)</label>
+      <div class="col-lg-8 col-md-7">
+        <input class="form-control" [(ngModel)]="selectedCircuitInterface?.Circuit.sla_latency" type="number" step="1" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-4 col-md-5 col-form-label">SLA Jitter (ms)</label>
+      <div class="col-lg-8 col-md-7">
+        <input class="form-control" [(ngModel)]="selectedCircuitInterface?.Circuit.sla_jitter" type="number" step="1" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-4 col-md-5 col-form-label">SLA Packet Loss (%)</label>
+      <div class="col-lg-8 col-md-7">
+        <input class="form-control" [(ngModel)]="selectedCircuitInterface?.Circuit.sla_packet_loss" type="number" step="0.01" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-4 col-md-5 col-form-label">Remote IP Address</label>
+      <div class="col-lg-8 col-md-7">
+        <input [textMask]="{mask: ipAddressMask}" class="form-control" [(ngModel)]="selectedCircuitInterface?.Circuit.remote_ip"
+          type="string" />
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="closeCircuitEditModal(selectedCircuitInterface)">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="saveCircuitEditModal(selectedCircuitInterface)">Save
+    </button>
+  </div>
+</ng-template>
+<!-- /.modal -->

@@ -1,0 +1,25 @@
+<div class="card-header" *ngIf="filtersExist && notifications.length > 0">
+  <div class="row">
+    <div class="col-md-6">
+      <label class="text-left filters-label">Filters</label>
+      <label class="switch switch-text switch-pill switch-success">
+        <input type="checkbox" class="switch-input"
+               (click)="onFilterToggle()"
+               [disabled]="isLoading"
+               [(ngModel)]="filtersEnabled">
+        <span class="switch-label" data-on="On" data-off="Off"></span>
+        <span class="switch-handle"></span>
+      </label>
+    </div>
+    <div class="col-md-6 filters-annotation" *ngIf="!isLoading">
+      Showing <strong>{{notifications.length}}</strong> notification{{notifications.length !== 1 ? 's': ''}}
+      <span *ngIf="filtersEnabled">
+        in <span class="filters-severity severity-{{displaySeverity(severity) | lowercase}}">{{displaySeverity(severity) | lowercase}}</span>
+        state
+        that <strong>{{hasProblem ? (notifications.length !== 1 ? 'have': 'has') + ' a problem': 'does not have a problem'}}</strong>
+      </span>
+    </div>
+  </div>
+</div>
+<app-device-notifications [notifications]="notifications"
+                          [isLoading]="isLoading"></app-device-notifications>

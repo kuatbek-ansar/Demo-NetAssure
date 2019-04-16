@@ -1,0 +1,45 @@
+<div class="animated fadeIn" *ngIf="!isLoading">
+  <release-notes></release-notes>
+  <div class="card">
+    <div class="card-header">
+      Network Performance Measurements
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-3">
+          <managed-devices-count></managed-devices-count>
+        </div>
+        <div class="col-3">
+          <sla-violations></sla-violations>
+        </div>
+        <div class="col-3">
+          <value-score></value-score>
+        </div>
+        <div class="col-3">
+          <notifications-card></notifications-card>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <top-talkers></top-talkers>
+        </div>
+        <div class="col-6">
+          <layerseven></layerseven>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <circuit-count></circuit-count>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      Current Weather Conditions
+    </div>
+    <div class="card-body">
+      <img class="col-12" src="https://radar.weather.gov/Conus/Loop/NatLoop.gif">
+    </div>
+  </div>
+</div>

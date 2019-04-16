@@ -1,0 +1,24 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Machine Name</th>
+      <th>Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of model">
+      <td>
+        {{item.name}}
+      </td>
+      <td>
+        {{item.cost | currency}}
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td>Total</td>
+      <td>{{total|currency}}</td>
+    </tr>
+  </tfoot>
+</table>

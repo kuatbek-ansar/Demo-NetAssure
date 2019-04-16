@@ -1,0 +1,5 @@
+
+<app-widget-loading [isSmall]="true" [isLoading]="isLoading"></app-widget-loading>
+<select *ngIf="!isLoading"  class="form-control" [(ngModel)]="value" (change)="onGroupChange()">
+  <option *ngFor="let row of rows" [value]="row.groupId">{{row.name}}</option>
+</select>

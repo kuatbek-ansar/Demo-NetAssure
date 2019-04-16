@@ -1,0 +1,183 @@
+{
+  "containerDefinitions": [
+    {
+      "name": "API",
+      "image": "862965745911.dkr.ecr.us-east-1.amazonaws.com/netassure-api:#{Octopus.Action.Package.PackageVersion}",
+      "cpu": 0,
+      "portMappings": [
+        {
+          "containerPort": 5050,
+          "hostPort": 5050,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "environment": [
+        {
+          "name": "aws:accessKeyId",
+          "value": "#{AWSStorage-AccessKeyId}"
+        },
+        {
+          "name": "aws:secretKey",
+          "value": "#{AWSStorage-SecretKey}"
+        },
+        {
+          "name": "aws:region",
+          "value": "#{AWSStorage-Region}"
+        },
+        {
+          "name": "aws:bucket",
+          "value": "#{AWSStorage-Bucket}"
+        },
+        {
+          "name": "aws:bucketUrl",
+          "value": "#{AWSStorage-BucketUrl}"
+        },
+        {
+          "name": "aws:backupsDirectory",
+          "value": "#{AWSStorage-BackupsDirectory}"
+        },
+        {
+          "name": "aws:sendMailArn",
+          "value": "#{AWSSNS-SendMailArn}"
+        },
+        {
+          "name": "jwtSecret",
+          "value": "#{API-JWTSecret}"
+        },
+        {
+          "name": "salesforce:apiUser",
+          "value": "#{Salesforce-Username}"
+        },
+        {
+          "name": "salesforce:apiPassword",
+          "value": "#{Salesforce-Password}"
+        },
+        {
+          "name": "salesforce:clientId",
+          "value": "#{Salesforce-ClientId}"
+        },
+        {
+          "name": "salesforce:clientSecret",
+          "value": "#{Salesforce-ClientSecret}"
+        },
+        {
+          "name": "salesforce:healthUrl",
+          "value": "#{Salesforce-HealthUrl}"
+        },
+        {
+          "name": "salesforce:loginUrl",
+          "value": "#{Salesforce-LoginUrl}"
+        },
+        {
+          "name": "salesforce:organizationId",
+          "value": "#{Salesforce-OrganizationId}"
+        },
+        {
+          "name": "salesforce:selfServiceUrl",
+          "value": "#{Salesforce-SelfServiceUrl}"
+        },
+        {
+          "name": "zabbix:apiUrl",
+          "value": "#{Zabbix-APIUrl}"
+        },
+        {
+          "name": "zabbix:userName",
+          "value": "#{Zabbix-Username}"
+        },
+        {
+          "name": "zabbix:password",
+          "value": "#{Zabbix-Password}"
+        },
+        {
+          "name": "appInsights:instrumentationKey",
+          "value": "#{AppInsights-instrumentationKey}"
+        },
+        {
+          "name": "cosmosdb:key",
+          "value": "#{CosmosDb-Key}"
+        },
+        {
+          "name": "cosmosdb:collectionRoot",
+          "value": "#{CosmosDb-CollectionRoot}"
+        },
+        {
+          "name": "cosmosdb:endpoint",
+          "value": "#{CosmosDb-Endpoint}"
+        },
+        {
+          "name": "webClientOrigin",
+          "value": "#{API-WebClientOrigin}"
+        },
+        {
+          "name": "logLevel",
+          "value": "DEBUG"
+        },
+        {
+          "name": "TYPEORM_CONNECTION",
+          "value": "#{Database-Connection}"
+        },
+        {
+          "name": "TYPEORM_HOST",
+          "value": "#{Database-Hostname}"
+        },
+        {
+          "name": "TYPEORM_PORT",
+          "value": "#{Database-Port}"
+        },
+        {
+          "name": "TYPEORM_USERNAME",
+          "value": "#{Database-Username}"
+        },
+        {
+          "name": "TYPEORM_PASSWORD",
+          "value": "#{Database-Password}"
+        },
+        {
+          "name": "TYPEORM_DATABASE",
+          "value": "#{Database-Name}"
+        },{
+          "name": "TYPEORM_SYNCHRONIZE",
+          "value": "#{Database-Synchronize}"
+        },
+        {
+          "name": "TYPEORM_LOGGING",
+          "value": "#{Database-Logging}"
+        },
+        {
+          "name": "TYPEORM_MIGRATIONS_DIR",
+          "value": "#{Database-MigrationsDir}"
+        },
+        {
+          "name": "TYPEORM_MIGRATIONS",
+          "value": "#{Database-Migrations}"
+        },
+        {
+          "name": "VERSION",
+          "value": "#{Octopus.Action.Package.PackageVersion}"
+        }
+      ],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/api",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ],
+  "family": "api",
+  "taskRoleArn": "arn:aws:iam::862965745911:role/ecsTaskExecutionRole",
+  "executionRoleArn": "arn:aws:iam::862965745911:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc",
+  "volumes": [],
+  "placementConstraints": [],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "256",
+  "memory": "512"
+}

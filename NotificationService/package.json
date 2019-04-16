@@ -1,0 +1,46 @@
+{
+  "name": "NotificationService",
+  "version": "1.0.0",
+  "description": "Notification Service",
+  "main": "handler.js",
+  "scripts": {
+    "build": "serverless package",
+    "build:test": "mocha -r ts-node/register tests/*.spec.ts --reporter mocha-teamcity-reporter-v2",
+    "deploy": "serverless deploy -v",
+    "lint": "./node_modules/.bin/tslint --project . -c tslint.json",
+    "start": "serverless invoke local -f notify -p ./data/event.json -l",
+    "test": "mocha -r ts-node/register tests/*.spec.ts -watch --watch-extensions ts"
+  },
+  "dependencies": {
+    "ajv": "^6.2.0",
+    "applicationinsights": "^1.0.1",
+    "aws-sdk": "^2.203.0",
+    "reflect-metadata": "^0.1.12",
+    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5",
+    "serverless": "^1.26.1",
+    "typedi": "^0.6.1"
+  },
+  "devDependencies": {
+    "@octopusdeploy/octopackjs": "0.0.7",
+    "@types/aws-lambda": "0.0.22",
+    "@types/chai": "^4.1.2",
+    "@types/mocha": "^2.2.48",
+    "@types/node": "^8.0.57",
+    "@types/sinon": "^4.1.4",
+    "chai": "^4.1.2",
+    "mocha": "^5.0.0",
+    "mocha-teamcity-reporter-v2": "^2.1.1",
+    "serverless-offline": "^3.17.0",
+    "serverless-webpack": "^4.0.0",
+    "should": "^13.2.1",
+    "sinon": "^4.4.2",
+    "ts-loader": "^2.3.7",
+    "tslint": "^5.9.1",
+    "typescript": "^2.5.2",
+    "webpack": "^3.6.0"
+  },
+  "author": "The Affiniti Team",
+  "repository": "git@bitbucket.org:affinititeam/NotificationService.git",
+  "license": "ISC"
+}

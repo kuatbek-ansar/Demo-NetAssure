@@ -1,0 +1,36 @@
+service:
+  name: NotificationService
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  region: us-east-1
+  stage: development
+  environment:
+    apiUrl: ${env:API_URL}
+    apiUser: ${env:API_USER}
+    apiPassword: ${env:API_PASSWORD}
+    appInsights_instrumentationKey: ${env:APPINSIGHTS_INSTRUMETNATION_KEY}
+    aws_accessKeyId: ${env:AWS_ACCESS_KEY_ID}
+    aws_region: ${env:AWS_REGION}
+    aws_secretKey: ${env:AWS_SECRET_KEY}
+    aws_sendMailArn: ${env:AWS_SEND_MAIL_ARN}
+    logLevel: ${env:LOG_LEVEL}
+
+functions:
+  notify:
+    handler: handler.notify
+    timeout: 20
+    memorySize: 256
+    name: NotificationService
+    description: Pushes SNS notifications based on matching alerts
+
+    events:
+      - http:
+          method: post
+          path: notify
+          cors: true

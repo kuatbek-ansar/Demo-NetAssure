@@ -1,0 +1,56 @@
+<p-table [value]="devices" [rows]="10" [rowsPerPageOptions]="[5,10,25]" [paginator]="devices?.length > 10" selectionMode="multiple"
+  [(selection)]="selectedDevices" (onRowSelect)="onDeviceRowClicked($event)" #dt>
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="HasActiveNotifications">Status
+        <p-sortIcon field="HasActiveNotifications"></p-sortIcon>
+      </th>
+      <th pSortableColumn="displayName">Device Name
+        <p-sortIcon field="displayName"></p-sortIcon>
+      </th>
+      <th pSortableColumn="ipAddress">IP Address
+        <p-sortIcon field="ipAddress"></p-sortIcon>
+      </th>
+      <th pSortableColumn="managedDevice.isManaged">Managed
+        <p-sortIcon field="managedDevice.isManaged"></p-sortIcon>
+      </th>
+    </tr>
+    <tr>
+      <th>
+          <p-dropdown [options]="statusFilter" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, 'HasActiveNotifications', 'equals')"
+          styleClass="ui-column-filter"></p-dropdown>
+      </th>
+      <th>
+          <input pInputText type="text" (input)="dt.filter($event.target.value, 'displayName', 'contains')">
+      </th>
+      <th>
+          <input pInputText type="text" (input)="dt.filter($event.target.value, 'ipAddress', 'contains')">
+      </th>
+      <th>
+          <p-dropdown [options]="managedFilter" [(ngModel)]="managedFilterValue" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, 'managedDevice.isManaged', 'equals')"
+          styleClass="ui-column-filter"></p-dropdown>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+    <tr [pSelectableRow]="item" [pSelectableRowIndex]="rowIndex">
+      <td style="width: 12%; text-align: center">
+        <span *ngIf="!item.HasActiveNotifications" class="badge badge-pill badge-success">&nbsp;</span>
+        <span *ngIf="item.HasActiveNotifications" class="badge badge-pill badge-danger">&nbsp;</span>
+      </td>
+      <td style="padding:.75rem">
+        {{item.displayName}}
+      </td>
+      <td>
+        {{item.ipAddress}}
+      </td>
+      <td style="width: 12%; text-align: center">
+        <span *ngIf="item.managedDevice.isManaged" class="badge badge-pill badge-success">&nbsp;</span>
+        <span *ngIf="!item.managedDevice.isManaged" class="badge badge-pill badge-danger">&nbsp;</span>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<div *ngIf="selectedDevices.length>1">
+  <button class="btn btn-primary" (click)="editMultipleClick()">Edit {{selectedDevices.length}} Selected</button>
+</div>

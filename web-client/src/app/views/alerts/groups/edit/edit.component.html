@@ -1,0 +1,88 @@
+<div class="card" *ngIf="!isLoading">
+  <div class="card-header">
+    Alert Group
+  </div>
+  <div class="card-body">
+    <div class="form-group row">
+      <label class="col-lg-1 col-md-1 col-form-label">Name</label>
+      <div class="col-lg-3 col-md-3">
+        <input class="form-control" [(ngModel)]="model.name" required />
+      </div>
+    </div>
+    <div class="row">
+      <button type="button" class="btn btn-primary" (click)="create(alertGroupEdit)">
+        <i class="icon-plus icons"></i>&nbsp; Add Recipient
+      </button>
+    </div>
+    <div class="row">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Notification Method</th>
+            <th>Address</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let row of model?.members">
+          <tr>
+            <td>
+              <button type="button" class="btn btn-success" (click)="edit(alertGroupEdit, row)">
+                <i class="icon-pencil icons"></i>&nbsp; Edit</button>
+              <button type="button" class="btn btn-danger" (click)="delete(item)">
+                <i class="icon-ban icons"></i>&nbsp; Delete</button>
+            </td>
+            <td>{{row.name}}</td>
+            <td>{{row.notificationMethod}}</td>
+            <td>{{row.address}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="save()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- .modal -->
+<ng-template #alertGroupEdit>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">{{ isCreating? 'Create' : 'Edit' }} Recipient</h4>
+      <button type="button" class="close" (click)="cancelModal()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group row">
+        <label class="col-lg-4 col-md-5 col-form-label">Name</label>
+        <div class="col-lg-8 col-md-7">
+          <input class="form-control" [(ngModel)]="selectedRecipient.name" required />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-lg-4 col-md-5 col-form-label">Notification Method</label>
+        <div class="col-lg-8 col-md-7">
+          <select class="form-control" [(ngModel)]="selectedRecipient.notificationMethod" required>
+            <option value="EMail">EMail</option>
+            <option value="Text Message">Text Message</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-lg-4 col-md-5 col-form-label">Address</label>
+        <div class="col-lg-8 col-md-7">
+          <input class="form-control" [(ngModel)]="selectedRecipient.address" required />
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="cancelModal()">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="saveModal()">Save
+      </button>
+    </div>
+  </div>
+</ng-template>
+<!-- /.modal -->

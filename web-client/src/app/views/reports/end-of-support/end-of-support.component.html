@@ -1,0 +1,92 @@
+<app-widget-loading [isLoading]="isLoading"></app-widget-loading>
+<div *ngIf="!isLoading">
+    <p-table [value]="model" [rows]="10" #dt exportFilename="endOfSupport" [columns]="cols">
+        <ng-template pTemplate="caption">
+          <div class="ui-helper-clearfix">
+            <button type="button" pButton icon="fa-file-o" iconPos="left" label="Export to CSV" (click)="dt.exportCSV()" style="float:left"></button>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="hostname">Device Name
+              <p-sortIcon field="hostname"></p-sortIcon>
+            </th>
+            <th pSortableColumn="vendor">Vendor
+              <p-sortIcon field="vendor"></p-sortIcon>
+            </th>
+            <th pSortableColumn="hw_pn">Part Number
+              <p-sortIcon field="hw_pn"></p-sortIcon>
+            </th>
+            <th pSortableColumn="hw_desc">Description
+              <p-sortIcon field="hw_desc"></p-sortIcon>
+            </th>
+            <th pSortableColumn="eos">End of Support
+              <p-sortIcon field="eos"></p-sortIcon>
+            </th>
+            <th pSortableColumn="new_pn">Replacement Part Number
+              <p-sortIcon field="new_pn"></p-sortIcon>
+            </th>
+            <th pSortableColumn="new_desc">Replacement Description
+              <p-sortIcon field="new_desc"></p-sortIcon>
+            </th>
+            <th pSortableColumn="newEquipmentCost">Replacement Cost
+              <p-sortIcon field="newEquipmentCost"></p-sortIcon>
+            </th>
+            <th>Link</th>
+          </tr>
+          <tr>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+              <input pInputText type="text" (input)="dt.filter($event.target.value, 'newEquipmentCost', 'contains')">
+            </th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-data>
+          <tr>
+            <td>{{data.hostname}}</td>
+            <td>{{data.vendor}}</td>
+            <td>{{data.hw_pn}}</td>
+            <td>{{data.hw_desc}}</td>
+            <td>{{data.eos|date}} ({{data.daysUntilEoS}} days ago)</td>
+            <td>{{data.new_pn}}</td>
+            <td>{{data.new_desc}}</td>
+            <td>{{data.newEquipmentCost| currency}}</td>
+            <td>
+              <a [href]="data.link" target="_blank">link</a>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="footer">
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+              <b>Total</b>
+            </td>
+            <td>
+              <b>{{ total | currency }}</b>
+            </td>
+            <td></td>
+          </tr>
+        </ng-template>
+      </p-table>
+</div>

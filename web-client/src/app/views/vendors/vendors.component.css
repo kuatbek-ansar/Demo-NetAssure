@@ -1,0 +1,9 @@
+.modal-content {
+    min-width: 600px;
+}
+
+.selected {
+    font-weight: bold;
+    box-shadow: 0px 0px 5px rgb(0, 232, 248);
+    background: #c2cfd6;
+}

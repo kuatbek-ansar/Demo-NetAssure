@@ -1,0 +1,31 @@
+<header class="app-header navbar">
+  <button class="navbar-toggler d-lg-none" type="button" appMobileSidebarToggler>
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" href="#/dashboard"></a>
+  <button class="navbar-toggler d-md-down-none" type="button" appSidebarToggler>
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <ul class="nav navbar-nav ml-auto">
+    <li *ngIf="User?.IsAuthenticated" class="nav-item dropdown pr-2" dropdown placement="bottom right">
+      <a class="nav-link dropdown-toggle"
+         data-toggle="dropdown"
+         href="#"
+         role="button"
+         aria-haspopup="true"
+         aria-expanded="false"
+         dropdownToggle (click)="false">
+        <img src="assets/img/avatars/blank-user.jpg" class="img-avatar" alt="{{User?.Username}}"/>
+        <span class="caret"></span>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
+        <a class="dropdown-item" href="#"
+           [ngClass]="a.Id === User.Account.Id? 'active': ''"
+           *ngFor="let a of User.Accounts" (click)="onChangeAccount(a)">{{a.Name}}</a>
+        <hr>
+        <a class="dropdown-item" href="#" routerLink='/login/setPassword'><i class="fa fa-exchange"></i> Change Password</a>
+        <a class="dropdown-item" href="#" routerLink='/login'><i class="fa fa-lock"></i> Logout</a>
+      </div>
+    </li>
+  </ul>
+</header>

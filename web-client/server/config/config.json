@@ -1,0 +1,37 @@
+{
+  "aws": {
+    "accessKeyId": "AKIAJIWRSELJUH7H2ERA",
+    "secretKey": "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",
+    "region": "us-east-1",
+    "bucket": "dev-affiniti-netassure",
+    "bucketUrl": "https://s3-us-east-1.amazonaws.com/",
+    "backupsDirectory": "backups",
+    "sendMailArn": "arn:aws:sns:us-east-1:862965745911:ProdSendMail"
+  },
+  "jwtSecret": "xl0G2gPD6KDcT8NzIbZLgvJY1wfFCLs2ZM1nMzshuMe5yKT7Bp",
+  "salesforce": {
+    "apiUser": "boyan@inventive.io.devbox",
+    "apiPassword": "p^E9^OS1*^93rVx@Ar3v",
+    "clientId": "3MVG9Z8h6Bxz0zc4s2pLEBGzjL0td1mylq6TcV.t6Mji6WjhsWZgXHZ9UnUQR3zgd8BhpROqmi7.wZjC4qsCt",
+    "clientSecret": "6754160595194136736",
+    "healthUrl": "https://cs40.salesforce.com/services/data",
+    "loginUrl": "https://test.salesforce.com/",
+    "organizationId": "00D540000008fmV",
+    "selfServiceUrl": "{0}/services/Soap/u/41.0/00D540000008fmV"
+  },
+  "zabbix": {
+    "apiUrl": "http://aftx-zabbix.affiniti.com/zabbix/api_jsonrpc.php",
+    "userName": "Admin",
+    "password": "Network@ssure"
+  },
+  "appInsights":{
+    "instrumentationKey": "5028aa91-487e-41f5-9728-d7fb9af3f30f"
+  },
+  "cosmosdb":{
+    "key": "PS3aKOteBV9lkse1tMQB4iw9SBDRXAYYxNXslKpFNpAPmWZvJOmZByvluRE8cmT58n6laoAx2aYIyRipqWusew==",
+    "collectionRoot": "dbs/nprobe/colls/",
+    "endpoint": "https://affinitisql.documents.azure.com"
+  },
+  "webClientOrigin": "http://localhost:4200",
+  "logLevel": "ERROR"
+}

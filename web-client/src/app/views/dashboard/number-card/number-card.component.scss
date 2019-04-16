@@ -1,0 +1,21 @@
+@import '../dashboard.cards.scss';
+
+.card {
+  cursor: pointer;
+}
+
+
+.count {
+  font-size: 50px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.arrow-text {
+  font-size: 20px;
+}
+
+.trend-arrow {
+  font-size: 60px;
+  margin-top: 15px;
+}

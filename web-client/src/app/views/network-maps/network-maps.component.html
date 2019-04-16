@@ -1,0 +1,81 @@
+<div class="animated fadeIn">
+  <app-no-data *ngIf="!isLoading"
+               [dataExists]="networkMaps?.length > 0" message="network maps">
+  </app-no-data>
+  <div class="card" *ngIf="!isLoading">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3">
+          <button type="button" class="btn btn-primary float-right mb-3" data-toggle="modal"
+                  (click)="onCreateForm()">
+            Upload
+          </button>
+          <table class="table table-striped table-clickable" *ngIf="networkMaps">
+            <tbody>
+            <tr *ngFor="let item of networkMaps">
+              <td class="text-left" (click)="onClick(item)">
+                {{item.name}}
+              </td>
+              <td class="text-right">
+                <p-toggleButton onLabel="" offLabel=""
+                                [(ngModel)]="item.confirmDelete"
+                                (onChange)="onDelete(!$event.checked, item)"
+                                onIcon="fa fa-trash"
+                                offIcon="fa fa-remove">
+                </p-toggleButton>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-9" *ngIf="networkMap">
+          <div class="card-header">
+            <span *ngIf="!isFileAnImage(networkMap.fileName)">
+            {{networkMap.name}} - <a [href]="networkMap.fileLocation" target="_blank">{{networkMap.fileName}}</a>
+            </span>
+            <span *ngIf="isFileAnImage(networkMap.fileName)">
+            {{networkMap.name}}
+            </span>
+          </div>
+          <div class="card" *ngIf="isFileAnImage(networkMap.fileName)">
+              <img class="col-12" *ngIf="!isImageLoading" [src]="networkMap.fileLocation"/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div bsModal #uploadMapModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel"
+         aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Upload Map</h4>
+            <button type="button" class="close" (click)="uploadMapModal.hide()" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="map-name">Name</label>
+              <div class="col-md-9">
+                <input type="text" #mapName [(ngModel)]="model.name" (keyup.enter)="onUpload()"
+                       class="form-control" id="map-name" name="map-name" placeholder="Name"/>
+                <app-file-upload [Model]="model.fileUpload" (onComplete)="onUploadComplete($event)"></app-file-upload>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="uploadMapModal.hide()">Cancel</button>
+            <button type="button" class="btn btn-primary btn-ladda" [disabled]="model?.name?.length < 1"
+                    (click)="onUpload()" data-style="expand-right" [ladda]='mapIsUploading'>
+              Upload
+            </button>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+  </div>
+</div>

@@ -1,0 +1,68 @@
+#support-cases .ui-table-thead > tr > th:first-child {
+  width: 90px;
+}
+
+#support-cases .ui-table-tbody > tr > td:first-child {
+  width: 90px;
+  color: #1985ac;
+}
+
+#support-cases tr.ui-state-highlight td:first-child {
+  color: white;
+}
+
+#support-cases .ui-datepicker.ui-widget .ui-datepicker-calendar thead th {
+  padding: 7px;
+}
+
+#support-cases .ui-dropdown-label {
+  text-align: left;
+}
+
+#support-cases .ui-dropdown-placeholder .ui-dropdown-label {
+   color: gray;
+}
+
+#support-cases .ui-multiselect-label {
+  color: #222222;
+  text-align: left;
+  margin-bottom: 0;
+}
+
+#support-cases .ui-multiselect-placeholder .ui-multiselect-label {
+  color: gray;
+}
+
+#support-case-comments th:first-child, td:first-child {
+  width: 175px;
+}
+
+#new-comment-form > div:first-child {
+  width: 175px;
+}
+
+#new-comment-form div {
+  text-align: left;
+}
+
+#new-comment-form textarea {
+  resize: none;
+}
+
+#new-case-dialog textarea {
+  resize: none;
+}
+
+#new-case-dialog .alert-danger {
+  padding: 0 0.5em;
+}
+
+p.preformatted {
+  white-space: pre-wrap;
+}
+
+@media (min-width: 600px) {
+  .modal-xl {
+      min-width: 600px !important;
+  }
+}

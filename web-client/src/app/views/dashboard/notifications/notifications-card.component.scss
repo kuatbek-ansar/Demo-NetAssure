@@ -1,0 +1,64 @@
+@import '../dashboard.cards.scss';
+$warning-color: #E8A111;
+$high-color: #ff00f2;
+$disaster-color: #ff0000;
+
+.notifications-legend {
+  padding-bottom: 15px;
+}
+
+.notifications-legend span{
+  padding-left: 2px;
+  padding-right: 2px;
+  cursor: pointer;
+}
+
+
+.severity-warning {
+  color: $warning-color;
+}
+
+.severity-high {
+  color: $high-color;
+}
+
+.severity-disaster {
+  color: $disaster-color;
+}
+
+.bar{
+  width: 25%;
+  display: inline-block;
+  bottom: 10px;
+  cursor: pointer;
+}
+
+.chart{
+  position: absolute;
+  width: 100%;
+  height: 100px;
+
+  .severity-warning{
+    background-color: $warning-color;
+  }
+  .severity-high{
+    background-color: $high-color;
+  }
+  .severity-disaster{
+    background-color: $disaster-color;
+  }
+}
+
+@media (max-width: 1442px)
+{
+  .chart{
+  height: 75px;
+  }
+}
+
+@media (max-width: 1050px)
+{
+  .chart{
+  height: 50px;
+  }
+}

@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="col-lg-6 col-md-6">
+    <select class="form-control" [(ngModel)]="deleting" multiple>
+        <option *ngFor="let item of selectedItems" [value]="item.id">{{item.name}}</option>
+    </select>
+  </div>
+  <div class="col-lg-3 col-md-3">
+    <button class="btn" (click)="showAdd(addDialog)">Add</button>
+    <button class="btn" (click)="delete()">Delete</button>
+  </div>
+</div>
+
+<!-- .modal -->
+<ng-template #addDialog>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Add</h4>
+      <button type="button" class="close" (click)="cancel()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group row">
+        <label class="col-lg-4 col-md-5 col-form-label">Name</label>
+        <div class="col-lg-8 col-md-7">
+          <select class="form-control" [(ngModel)]="adding" required >
+            <option *ngFor="let item of availableItems" [value]="item.id">{{item.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="save()">Save
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<!-- /.modal -->

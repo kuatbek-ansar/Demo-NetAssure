@@ -1,0 +1,23 @@
+<div class="modal-header">
+  <h4 class="modal-title">Select Vendor</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <p>Name Circuit</p>
+  <input [(ngModel)]="circuitName"/>
+
+  <p>Choose Vendor</p>
+  <select [(ngModel)]="selectedVendor" class="form-control" id="vendorSelector">
+    <option></option>
+    <option *ngFor="let vendor of vendors" [ngValue]="vendor">
+      {{vendor.name}}
+    </option>
+  </select>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="onClick()">Select</button>
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>

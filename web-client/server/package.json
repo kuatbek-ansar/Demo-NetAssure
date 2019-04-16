@@ -1,0 +1,81 @@
+{
+  "name": "netassure-api",
+  "version": "1.0.0",
+  "description": "API gateway for Affiniti Network Assure",
+  "main": "app.js",
+  "dependencies": {
+    "applicationinsights": "^1.0.1",
+    "aws-sdk": "^2.156.0",
+    "chai": "^4.1.2",
+    "cors": "^2.8.4",
+    "documentdb": "^1.14.2",
+    "express": "^4.16.2",
+    "express-busboy": "^6.0.1",
+    "express-jwt": "^5.3.0",
+    "jsforce": "^1.8.0",
+    "lodash": "^4.17.4",
+    "memory-cache": "^0.2.0",
+    "moment": "^2.20.1",
+    "morgan": "^1.9.0",
+    "multer": "^1.3.0",
+    "multer-s3": "^2.7.0",
+    "mysql": "^2.15.0",
+    "pdfkit": "^0.8.3",
+    "reflect-metadata": "^0.1.10",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "swagger-ui-express": "^2.0.13",
+    "ts-node": "^3.3.0",
+    "typedi": "^0.5.2",
+    "typeorm": "^0.1.11",
+    "typescript": "^2.7.1",
+    "typescript-rest": "^1.2.1",
+    "typescript-rest-swagger": "0.0.13",
+    "typescript-string-operations": "^1.2.4",
+    "voilab-pdf-table": "^0.4.0",
+    "xml2js": "^0.4.19"
+  },
+  "devDependencies": {
+    "@octopusdeploy/octopackjs": "0.0.7",
+    "@types/chai": "^4.0.4",
+    "@types/mocha": "^2.2.44",
+    "@types/multer": "^1.3.6",
+    "@types/multer-s3": "^2.7.5",
+    "@types/node": "^8.0.51",
+    "mocha": "^3.5.0",
+    "mocha-teamcity-reporter-v2": "^2.1.0",
+    "nodemon": "^1.12.1",
+    "supertest": "^3.0.0",
+    "ts-mockito": "^2.2.7",
+    "tslint": "^5.9.1"
+  },
+  "scripts": {
+    "start": "nodemon",
+    "prebuild": "./node_modules/.bin/swaggerGen -c swagger.json",
+    "test:build": "mocha --grep Unit -r ts-node/register *.spec.ts **/*.spec.ts --reporter mocha-teamcity-reporter-v2",
+    "test": "mocha --grep Unit -r ts-node/register *.spec.ts **/*.spec.ts",
+    "test-integrations": "mocha --grep Integration -r ts-node/register *.spec.ts **/*.spec.ts",
+    "test-all": "mocha -r ts-node/register *.spec.ts **/*.spec.ts",
+    "watch-tests": "nodemon --watch *.ts --ext js,ts,json --exec mocha --grep Unit -r ts-node/register *.spec.ts **/*.spec.ts",
+    "build": "tsc -p . && tsc -p ./migrations",
+    "postbuild": "cp -rf node_modules ./artifacts/node_modules",
+    "migrate:run": "ts-node ./node_modules/typeorm/cli.js migrations:run",
+    "migrate:create": "ts-node ./node_modules/typeorm/cli.js migrations:create -n",
+    "lint": "./node_modules/.bin/tslint --project . -c tslint.json"
+  },
+  "nodemonConfig": {
+    "verbose": false,
+    "watch": [
+      "../models/*.ts",
+      "*.ts"
+    ],
+    "ext": "ts js json",
+    "ignore": [
+      "*.spec.ts *./artifacts/**"
+    ],
+    "exec": "ts-node ./app.ts"
+  },
+  "author": "The Affiniti Team",
+  "repository": "git@bitbucket.org:affinititeam/web-client.git",
+  "license": "ISC"
+}

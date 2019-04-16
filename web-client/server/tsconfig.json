@@ -1,0 +1,30 @@
+{
+  "compileOnSave": false,
+  "module": "commonjs",
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "outDir": "./artifacts",
+    "types": [
+      "node",
+      "mocha",
+      "chai"
+    ],
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowJs": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es5",
+      "es6"
+    ]
+  },
+  "files": [
+    "app.ts"
+  ]
+}

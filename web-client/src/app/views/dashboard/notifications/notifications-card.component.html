@@ -1,0 +1,20 @@
+<div class="card">
+  <div class="card-body text-center">
+    <app-widget-loading [isLoading]="isLoading"></app-widget-loading>
+    <div *ngIf="!isLoading">
+      <div class="notifications-legend text-uppercase font-weight-bold">
+        <span class="severity-warning" (click)="onWarningClick()">Warning: {{warningNotifications}}</span>
+        <span class="severity-high" (click)="onHighClick()">High: {{highNotifications}}</span>
+        <span class="severity-disaster" (click)="onCriticalClick()">Critical: {{criticalNotifications}}</span>
+      </div>
+      <div class="chart">
+        <div class="bar severity-warning" [style.height]="(scale * warningNotifications)+'%'" (click)="onWarningClick()"></div>
+        <div class="bar severity-high" [style.height]="(scale * highNotifications)+'%'" (click)="onHighClick()"></div>
+        <div class="bar severity-disaster" [style.height]="(scale * criticalNotifications)+'%'" (click)="onCriticalClick()"></div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-muted text-uppercase font-weight-bold">
+    Notifications
+  </div>
+</div>

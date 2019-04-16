@@ -1,0 +1,45 @@
+// Here you can add other styles
+.col-form-label {
+	font-weight: bold;
+	text-align: right;
+}
+
+.form-control-static {
+	margin-top: 7px;
+}
+
+.table-clickable tbody tr:hover {
+	background-color: $gray-200;
+	cursor: pointer;
+}
+
+.table-clickable tbody tr.selectedItem {
+	background-color: $gray-300;
+}
+
+.small-table-cell {
+	width: 100px;
+}
+
+@include media-breakpoint-down(sm) {
+	.col-form-label {
+		text-align: left;
+	}
+}
+
+.ui-togglebutton.ui-button.ui-state-active {
+  background-color: #f00;
+}
+
+
+th.number-column {
+  width: 120px;
+}
+
+.ui-table-thead .ui-inputtext {
+  width: 100%;
+}
+
+.ui-table-thead th {
+  text-align: center;
+}

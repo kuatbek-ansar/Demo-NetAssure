@@ -1,0 +1,90 @@
+<div class="card" *ngIf="!isLoading">
+  <div class="card-header">
+    Invoices
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <button type="button" class="btn btn-primary" (click)="create()">
+        <i class="icon-plus icons"></i>&nbsp; Create
+      </button>
+    </div>
+    <div class="row mt-3">
+      <app-no-data *ngIf="!isLoading" [dataExists]="unfilteredRowCount > 0" message="invoices">
+      </app-no-data>
+      <p-table [value]="model" [rows]="25" [paginator]="model?.length > 25" #dt *ngIf="unfilteredRowCount>0" [loading]="isRefreshingGrid">
+        <ng-template pTemplate="header">
+          <tr>
+            <th  style="width: 120px"></th>
+            <th pSortableColumn="customerId">
+              Customer
+              <p-sortIcon field="customerId"></p-sortIcon>
+            </th>
+            <th pSortableColumn="number">Number
+              <p-sortIcon field="number"></p-sortIcon>
+            </th>
+            <th pSortableColumn="date">Date
+              <p-sortIcon field="date"></p-sortIcon>
+            </th>
+            <th pSortableColumn="amount" class="number-column">Amount
+              <p-sortIcon field="amount"></p-sortIcon>
+            </th>
+          </tr>
+          <tr>
+            <th></th>
+            <th>
+              <select class="form-control" [(ngModel)]="filterByGroupId" (change)="onGroupChange()">
+                <option *ngFor="let group of groups" [value]="group.groupId">{{group.name}}</option>
+              </select>
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>
+                <button type="button" class="btn btn-success" (click)="view(item)" title='View'>
+                    <i class="icon-eye icons"></i>
+                  </button>
+                  <button type="button" class="btn btn-success" (click)="download(item)" title="Download">
+                    <i class="icon-cloud-download icons"></i>
+                  </button>
+            </td>
+            <td>{{getGroupName(item.customerId)}}</td>
+            <td>{{item.number}}</td>
+            <td>{{item.date | date}}</td>
+            <td class="text-right">{{(item.amount || 0) | currency}}</td>
+          </tr>
+        </ng-template>
+        <p-column [style]="{ 'width': '200px'}">
+          <ng-template let-item="rowData" pTemplate="body">
+
+          </ng-template>
+        </p-column>
+        <p-column field="customerId" header="Customer" sortable="true" [filter]="true">
+          <ng-template pTemplate="filter" let-col>
+            <select class="form-control" [(ngModel)]="filterByGroupId" (change)="onGroupChange()">
+              <option *ngFor="let group of groups" [value]="group.groupId">{{group.name}}</option>
+            </select>
+          </ng-template>
+          <ng-template let-item="rowData" pTemplate="body">
+            {{getGroupName(item.customerId)}}
+          </ng-template>
+        </p-column>
+        <p-column field="number" header="Number" sortable="true">
+        </p-column>
+        <p-column field="date" header="Date" sortable="true">
+          <ng-template let-item="rowData" pTemplate="body">
+            {{item.date | date}}
+          </ng-template>
+        </p-column>
+        <p-column field="amount" header="Amount" sortable="true">
+          <ng-template let-item="rowData" pTemplate="body">
+            {{(item.amount || 0) | currency}}
+          </ng-template>
+        </p-column>
+      </p-table>
+    </div>
+  </div>
+</div>

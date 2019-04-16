@@ -1,0 +1,39 @@
+.ui-calendar table {
+  table-layout: auto;
+}
+
+.ui-calendar .ui-inputtext {
+  width: 100%;
+}
+
+.has-problem-false {
+  color: #14892c
+}
+
+.has-problem-true {
+  color: #d04437
+}
+
+.severity-not-classified {
+  color: #FFD813
+}
+
+.severity-information {
+  color: #F6C342
+}
+
+.severity-warning {
+  color: #E8A111
+}
+
+.severity-average {
+  color: #FF8920
+}
+
+.severity-high {
+  color: #ff00f2
+}
+
+.severity-disaster {
+  color: #ff0000
+}

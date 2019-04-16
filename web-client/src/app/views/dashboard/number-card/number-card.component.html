@@ -1,0 +1,16 @@
+
+<div class="card" *ngIf="!isLoading" (click)="onClick()">
+  <div [class]="number=== null ? 'no-data card-body text-center': 'card-body text-center'">
+    <h5 *ngIf="number !== null && direction === arrowDirection.GoingUp" class="card-title">
+      <i class="fa fa-caret-up"></i><br/>Up</h5>
+    <h5 *ngIf="number !== null && direction === arrowDirection.GoingDown" class="card-title">
+      <i class="fa fa-caret-down"></i><br/>Down</h5>
+    <h5 *ngIf="number !== null && direction === arrowDirection.Unchanged" class="card-title">
+      <i>=</i><br/>Unchanged</h5>
+    <div *ngIf="number !== null" class="count">
+      {{number}}
+    </div>
+    <app-widget-loading [isLoading]="number === null"></app-widget-loading>
+  </div>
+  <div class="card-footer text-uppercase text-muted font-weight-bold">{{title}}</div>
+</div>

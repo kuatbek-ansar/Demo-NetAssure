@@ -1,0 +1,9 @@
+<div *ngIf="unreadReleaseNotes.length > 0" class="card">
+  <div class="card-body">
+    <div *ngFor="let note of unreadReleaseNotes" class="release-note">
+      New Release Notes:
+      <a [href]="note.link" target="_blank" aria-label="Read release notes">{{note.title}}</a>
+      <i class="icon-close close" (click)="markReleaseNoteRead(note.id)" aria-label="Remove this release note notification"></i> 
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+<div class="animated fadeIn" *ngIf="!isLoading">
+  <div class="card">
+    <div class="card-header">
+      <div class="col-md-6 form-inline">
+        <span class="pr-2">Report to View:</span>
+        <select class="form-control" id="reportPicker" [(ngModel)]="report" (ngModelChange)="onChangeReport()" >
+          <option *ngFor="let r of reports" [value]="r.label">{{r.label}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="card-body">
+      <div *ngIf="report === reportTypes.Top10UtilizedCircuits">
+        <top10-utilized-circuits></top10-utilized-circuits>
+      </div>
+      <div *ngIf="report === reportTypes.Bottom10UtilizedCircuits">
+        <bottom10-utilized-circuits></bottom10-utilized-circuits>
+      </div>
+      <div *ngIf="report == reportTypes.Top10UtilizedInterfaces">
+        <top10-utilized-interfaces></top10-utilized-interfaces>
+      </div>
+      <div *ngIf="report == reportTypes.Bottom10UtilizedInterfaces">
+        <bottom10-utilized-interfaces></bottom10-utilized-interfaces>
+      </div>
+      <div *ngIf="report == reportTypes.ApproachingEndOfSupport">
+        <approaching-end-of-support></approaching-end-of-support>
+      </div>
+      <div *ngIf="report == reportTypes.EndOfSupport">
+        <end-of-support></end-of-support>
+      </div>
+      <div *ngIf="report == reportTypes.ManagedDevices">
+        <managed-devices></managed-devices>
+      </div>
+      <div *ngIf="report == reportTypes.ManagedDevicesHistory">
+        <managed-devices-history></managed-devices-history>
+      </div>
+      <div *ngIf="report == reportTypes.CircuitValueScores">
+        <circuit-value-scores></circuit-value-scores>
+      </div>
+      <div *ngIf="report == reportTypes.SLAViolations">
+        <sla-violations></sla-violations>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="app flex-row">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card-group">
+          <div class="card p-4">
+            <div class="card-body">
+              <p class="text-muted">Sign In to Your Account</p>
+              <form name="form" (ngSubmit)="f.form.valid && Login()" #f="ngForm">
+                <div class="input-group mb-3" [ngClass]="{ 'has-error': !f.submitted && !username.valid }">
+                  <input type="text" class="form-control"[ngClass]="{ 'is-invalid': HasErrors }" name="username"
+                         [disabled]="IsLoading"
+                         [(ngModel)]="User.Username" (keyup.enter)="Login()"
+                         placeholder="Username"
+                         #username="ngModel" required
+                         focusElement />
+                  <div *ngIf="f.form.submitted && !username.valid" class="help-block">Required</div>
+                </div>
+                <div class="input-group mb-3" [ngClass]="{ 'has-error': !password.valid }">
+                  <input type="password" class="form-control" [ngClass]="{ 'is-invalid': HasErrors }" name="password"
+                         [disabled]="IsLoading"
+                         [(ngModel)]="User.Password" (keyup.enter)="Login()"
+                         placeholder="Password"
+                         #password="ngModel" required />
+                  <div *ngIf="f.form.submitted && !password.valid" class="help-block">Required</div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <button id='login-button' [disabled]="IsLoading || !username.valid || !password.valid" type="button" class="btn btn-primary btn-ladda" (click)="Login()" data-style="expand-right" [ladda]='IsLoading'>Login</button>
+                  </div>
+                  <div class="col-6 text-right">
+                    <button type="button" class="btn btn-link px-0" href="#" routerLink='/login/reset'>Forgot Password?</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

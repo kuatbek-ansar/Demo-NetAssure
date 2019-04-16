@@ -1,0 +1,24 @@
+.card{
+    min-height: 180px;
+}
+
+
+.card-body {
+  padding: 12px 12px 0 12px;
+
+}
+.card-title {
+  margin-bottom: 0;
+}
+
+.card-title i {
+  font-size: 28px;
+  line-height: 28px;
+}
+
+.card-footer {
+  background: inherit;
+  border-top: 0;
+  padding-top:0;
+  text-align: center;
+}

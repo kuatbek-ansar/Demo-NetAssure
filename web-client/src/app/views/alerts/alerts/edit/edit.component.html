@@ -1,0 +1,45 @@
+<div class="card" *ngIf="!isLoading">
+  <div class="card-header">
+    Alert
+  </div>
+  <div class="card-body">
+    <div class="form-group row">
+      <label class="col-lg-2 col-md-2 col-form-label">Name</label>
+      <div class="col-lg-3 col-md-3">
+        <input class="form-control" [(ngModel)]="model.name" required />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-2 col-md-2 col-form-label">Severity</label>
+      <div class="col-lg-3 col-md-3">
+        <select class="form-control" [(ngModel)]="model.severity" required>
+          <option value="-1">Any</option>
+          <option value="0">Not Classified</option>
+          <option value="1">Information</option>
+          <option value="2">Warning</option>
+          <option value="3">Average</option>
+          <option value="4">High</option>
+          <option value="5">Disaster</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-2 col-md-2 col-form-label">Devices</label>
+      <multi-chooser [selectedItems]="model.managedDevices" [allItems]="allDevices" class="col-lg-6 col-md-6"></multi-chooser>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-lg-2 col-md-2 col-form-label">Notifications</label>
+      <multi-chooser [selectedItems]="model.notifications" [allItems]="allNotifications" class="col-lg-6 col-md-6"></multi-chooser>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-lg-2 col-md-2 col-form-label">Groups to Notify</label>
+      <multi-chooser [selectedItems]="model.alertGroups" [allItems]="allAlertGroups" class="col-lg-6 col-md-6"></multi-chooser>
+    </div>
+    <div class="row">
+      <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="save()">Save</button>
+    </div>
+  </div>
+</div>

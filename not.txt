@@ -1,0 +1,17 @@
+{ active: true,
+  groupids: '17',
+  filter: { value: '1' },
+  min_severity: '4',
+  output: 'extend',
+  selectHosts: 'extend',
+  sortfield: 'lastchange',
+  sortoder: 'DESC' }
+
+{ active: true,
+  groupids: '17',
+  filter: { value: '0,1' },
+  min_severity: '4',
+  output: 'extend',
+  selectHosts: 'extend',
+  sortfield: 'lastchange',
+  sortoder: 'DESC' }

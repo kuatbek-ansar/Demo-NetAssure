@@ -1,0 +1,63 @@
+<div>
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        Global SNMP Configuration
+        <!-- drop-down for customer to pick v1,v2c,v3. If we can show next fields based on which is picked, that would be nice, but can list all fields if not and just add notes of which are needed.
+community string for v1 and v2c
+for v3, need fields for context name, security name, security level.-->
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12 col-lg-6">
+            <div class="form-group">
+              <label class="col-form-label" for="">Version</label>
+              <select class="form-control" [(ngModel)]="model.version">
+                <option>v1</option>
+                <option>v2c</option>
+                <option>v3</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="model.version !== 'v3'">
+          <div class="col-md-12 col-lg-6">
+            <div class="form-group">
+              <label class="col-form-label" for="">Community</label>
+              <input type="text" class="form-control" [(ngModel)]="model.community">
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="model.version === 'v3'">
+          <div class="col-md-12 col-lg-6">
+            <div class="form-group">
+              <label class="col-form-label" for="">Context Name</label>
+              <input type="text" class="form-control" [(ngModel)]="model.contextName">
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="model.version === 'v3'">
+          <div class="col-md-12 col-lg-6">
+            <div class="form-group">
+              <label class="col-form-label" for="">Security Name</label>
+              <input type="text" class="form-control" [(ngModel)]="model.securityName">
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="model.version === 'v3'">
+          <div class="col-md-12 col-lg-6">
+            <div class="form-group">
+              <label class="col-form-label" for="">Security Level</label>
+              <input type="text" class="form-control" [(ngModel)]="model.securityLevel">
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="text-center">
+            <button class="btn btn-primary" (click)="save()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

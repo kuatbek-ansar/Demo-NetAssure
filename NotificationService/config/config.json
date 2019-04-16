@@ -1,0 +1,15 @@
+{
+  "apiUrl": "http://anadev1.affiniti.com/api",
+  "apiUser": "demoana@affiniti.com.ana",
+  "apiPassword": "Network@ssure",
+  "appInsights":{
+    "instrumentationKey": "5028aa91-487e-41f5-9728-d7fb9af3f30f"
+  },
+  "aws": {
+    "accessKeyId": "AKIAJIWRSELJUH7H2ERA",
+    "region": "us-east-1",
+    "secretKey": "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",
+    "sendMailArn": "arn:aws:sns:us-east-1:862965745911:ProdSendNotification"
+  },
+  "logLevel": "DEBUG"
+}

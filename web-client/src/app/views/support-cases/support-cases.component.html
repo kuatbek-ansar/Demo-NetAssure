@@ -1,0 +1,387 @@
+<div class="animated fadeIn">
+  <app-no-data *ngIf="!isLoading" [dataExists]="supportCases?.length > 0" message="support cases">
+  </app-no-data>
+  <div class="card" *ngIf="!isLoading">
+    <div class="card-header row m-0 p-3">
+      <div class="col-md-6 mt-2">
+        <button type="button" class="btn btn-primary" (click)="showCaseForm()">New Support Case</button>
+        <span>or call Affiniti Network Assure NOC -
+          <a href="tel:1-888-334-4096">1-888-334-4096</a>
+        </span>
+      </div>
+      <div class="col-md-6 text-right mt-2">
+        <button type="button" class="btn btn-primary mr-2" *ngIf="supportCases?.length > 0"
+                (click)="toggleOpenCases(true)" [ngClass]="{'active': showOpenCases}"
+                #openCases>Open Cases
+        </button>
+        <button type="button" class="btn btn-primary" *ngIf="supportCases?.length > 0" (click)="toggleOpenCases(false)"
+                [ngClass]="{'active': showAllCases}">All Cases
+        </button>
+      </div>
+    </div>
+    <div class="card-body" *ngIf="supportCases?.length > 0">
+      <p-table id="support-cases" [value]="supportCases" [rows]="10" [paginator]="supportCases.length > 10"
+               emptyMessage="No matching cases found."
+               selectionMode="single" [(selection)]="selectedSupportCase" (onRowSelect)="onRowSelect($event)"
+               (onFilter)="onFilter($event)"
+               #casesTable>
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="Number">ID
+              <p-sortIcon field="Number"></p-sortIcon>
+            </th>
+            <th pSortableColumn="Site">Site
+              <p-sortIcon field="Site"></p-sortIcon>
+            </th>
+            <th pSortableColumn="Subject">Subject
+              <p-sortIcon field="Subject"></p-sortIcon>
+            </th>
+            <th pSortableColumn="Severity">Severity
+              <p-sortIcon field="Severity"></p-sortIcon>
+            </th>
+            <th pSortableColumn="CreatedDate">Opened
+              <p-sortIcon field="CreatedDate"></p-sortIcon>
+            </th>
+            <th pSortableColumn="ContactName">Contact
+              <p-sortIcon field="ContactName"></p-sortIcon>
+            </th>
+            <th pSortableColumn="Status">Status
+              <p-sortIcon field="Status"></p-sortIcon>
+            </th>
+          </tr>
+          <tr>
+            <th>
+              <input pInputText type="text" placeholder="Search"
+                     (input)="casesTable.filter($event.target.value, 'Number', 'contains')">
+            </th>
+            <th>
+              <input pInputText type="text" placeholder="Search"
+                     (input)="casesTable.filter($event.target.value, 'Site', 'contains')">
+            </th>
+            <th>
+              <input pInputText type="text" placeholder="Search"
+                     (input)="casesTable.filter($event.target.value, 'Subject', 'contains')">
+            </th>
+            <th>
+              <input pInputText type="text" placeholder="Search"
+                     (input)="casesTable.filter($event.target.value, 'Severity', 'contains')">
+            </th>
+            <th>
+              <p-dropdown [options]="dateOptions" [(ngModel)]="selectedDateFilter" placeholder="Choose dates"
+                          editable="true" styleClass="ui-column-filter"
+                          [style]="{'width': '100%'}" [ngClass]="{'ui-dropdown-placeholder': !selectedDateFilter}"
+                          (onChange)="casesTable.filter($event.value, 'DateForFiltering', 'in')"></p-dropdown>
+            </th>
+            <th>
+              <input pInputText type="text" placeholder="Search"
+                     (input)="casesTable.filter($event.target.value, 'Contact', 'contains')">
+            </th>
+            <th>
+              <p-multiSelect id="status-filter" [options]="statuses" [(ngModel)]="selectedStatusFilter"
+                             defaultLabel="Choose status" maxSelectedLabels="1"
+                             styleClass="ui-column-filter" [style]="{'width': '100%'}"
+                             [ngClass]="{'ui-multiselect-placeholder': !filteredByStatus}"
+                             (onChange)="casesTable.filter($event.value,'Status','in')"></p-multiSelect>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+          <tr [pSelectableRow]="item" [pSelectableRowIndex]="rowIndex">
+            <td>{{item.Number}}</td>
+            <td>{{item.Site}}</td>
+            <td>{{item.Subject}}</td>
+            <td>{{item.Severity}}</td>
+            <td>{{item.CreatedDate | date:'short'}}</td>
+            <td>{{item.ContactName}}</td>
+            <td>{{item.Status}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+  <div class="card-body" *ngIf="detailsLoading">
+    <div class="sk-wave">
+      <div class="sk-rect sk-rect1"></div>
+      <div class="sk-rect sk-rect2"></div>
+      <div class="sk-rect sk-rect3"></div>
+      <div class="sk-rect sk-rect4"></div>
+      <div class="sk-rect sk-rect5"></div>
+    </div>
+  </div>
+  <div class="card" *ngIf="hasDisplayedCase">
+    <div class="card-header">
+      <span>Case {{selectedSupportCase.Number}} Details</span>
+    </div>
+    <div class="card-body">
+      <div class="m-3">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-md-4 col-form-label">Type</label>
+              <div class="col-md-8">
+                <p class="form-control-static">{{selectedSupportCase.Type}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-md-4 col-form-label">Origin</label>
+              <div class="col-md-8">
+                <p class="form-control-static">{{selectedSupportCase.Origin}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-md-4 col-form-label">Service</label>
+              <div class="col-md-8">
+                <p class="form-control-static">{{selectedSupportCase.Service}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-md-4 col-form-label">Date/Time Opened</label>
+              <div class="col-md-8">
+                <p class="form-control-static">{{selectedSupportCase.CreatedDate | date:'short'}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-md-4 col-form-label">Severity</label>
+              <div class="col-md-8">
+                <p class="form-control-static">{{selectedSupportCase.Severity}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-md-4 col-form-label">Owner</label>
+              <div class="col-md-8">
+                <p class="form-control-static">{{selectedSupportCase.OwnerName}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-md-4 col-form-label">Site</label>
+              <div class="col-md-8">
+                <p class="form-control-static">{{selectedSupportCase.Site}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-md-4 col-form-label">Users Impacted</label>
+              <div class="col-md-8">
+                <p class="form-control-static">{{selectedSupportCase.UsersImpacted}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group row">
+              <label class="col-md-2 col-form-label">Subject</label>
+              <div class="col-md-10">
+                <p class="form-control-static">{{selectedSupportCase.Subject}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group row">
+              <label class="col-md-2 col-form-label">Description</label>
+              <div class="col-md-10">
+                <p class="form-control-static preformatted">{{selectedSupportCase.Description}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-md-4 col-form-label">Status</label>
+              <div class="col-md-8">
+                <p class="form-control-static">{{selectedSupportCase.Status}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-md-4 col-form-label">Date/Time Closed</label>
+              <div class="col-md-8">
+                <p class="form-control-static">{{selectedSupportCase.ClosedDate | date:'short'}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group row">
+              <label class="col-md-2 col-form-label">Case Resolution</label>
+              <div class="col-md-10">
+                <p class="form-control-static preformatted">{{selectedSupportCase.ResolutionFixAction}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-body" *ngIf="commentsLoading">
+    <div class="sk-wave">
+      <div class="sk-rect sk-rect1"></div>
+      <div class="sk-rect sk-rect2"></div>
+      <div class="sk-rect sk-rect3"></div>
+      <div class="sk-rect sk-rect4"></div>
+      <div class="sk-rect sk-rect5"></div>
+    </div>
+  </div>
+  <div class="card" *ngIf="hasDisplayedComments">
+    <p-table id="support-case-comments" [(value)]="selectedSupportCase.Comments"
+             emptyMessage="There are no comments for this case."
+             scrollable="true" scrollHeight="200px" #commentsTable>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Created</th>
+          <th>Comment</th>
+        </tr>
+        <tr>
+          <th>
+            <input pInputText placeholder="Search" type="text"
+                   (input)="commentsTable.filter($event.target.value, 'Created', 'contains')">
+          </th>
+          <th>
+            <input pInputText placeholder="Search" type="text"
+                   (input)="commentsTable.filter($event.target.value, 'CommentBody', 'contains')">
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item>
+        <tr>
+          <td>{{item.Created}}</td>
+          <p class="preformatted">{{item.CommentBody}}</p>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <form id="new-comment-form" name="commentForm" [formGroup]="newCommentForm" class="row" novalidate>
+          <div class="col-md-auto">
+            <button type="button" class="btn btn-primary" [hidden]="displayNewCommentForm" (click)="showCommentForm()">
+              New Comment
+            </button>
+          </div>
+          <div class="col" [hidden]="!displayNewCommentForm">
+            <div class="row">
+              <div class="col">
+                <textarea formControlName="comment" rows="1" placeholder="Enter comment..." class="w-100"
+                          autoGrow></textarea>
+              </div>
+              <div class="col-md-auto">
+                <button type="button" class="btn btn-primary" [ngClass]="{'disabled': !newCommentForm.valid}"
+                        [disabled]="!newCommentForm.valid"
+                        (click)="submitCommentForm()">Submit
+                </button>
+                <button type="button" class="btn btn-primary" (click)="hideCommentForm()">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </ng-template>
+    </p-table>
+  </div>
+  <p-dialog id="new-case-dialog" header="Open a new support case" [(visible)]="displayNewCaseForm" modal="true"
+            styleClass="modal-xl fade"
+            [responsive]="true" [breakpoint]="600" [closable]="false" [closeOnEscape]="false" [draggable]="false"
+            [resizable]="false">
+    <form name="caseForm" [formGroup]="newCaseForm" novalidate>
+      <div class="form-group">
+        <div>
+          <label class="col-md-12">
+            <div *ngIf="service.invalid && (service.dirty || service.touched)" class="alert-danger float-right mb-1">
+              Service is required
+            </div>
+            <div class="mb-1">Service:</div>
+            <select formControlName="service" class="form-control">
+              <option *ngFor="let option of caseServices" [value]="option">{{option}}</option>
+            </select>
+          </label>
+        </div>
+        <div>
+          <label class="col-md-12">
+            <div *ngIf="severity.invalid && (severity.dirty || severity.touched)" class="alert-danger float-right mb-1">
+              Severity is required
+            </div>
+            <div class="mb-1">Severity:</div>
+            <select formControlName="severity" class="form-control">
+              <option *ngFor="let option of caseSeverities" [value]="option">{{option}}</option>
+            </select>
+          </label>
+        </div>
+        <div>
+          <label class="col-md-12">
+            <div *ngIf="users_impacted.invalid && (users_impacted.dirty || users_impacted.touched)"
+                 class="alert-danger float-right mb-1">
+              Users Impacted is required
+            </div>
+            <div class="mb-1">Users Impacted:</div>
+            <select formControlName="users_impacted" class="form-control">
+              <option *ngFor="let option of caseUsersImpacted" [value]="option">{{option}}</option>
+            </select>
+          </label>
+        </div>
+        <div>
+          <label class="col-md-12">
+            <div *ngIf="site.invalid && (site.dirty || site.touched)" class="alert-danger float-right mb-1">
+              <div *ngIf="site.errors.required">
+                Site is required
+              </div>
+              <div *ngIf="site.errors.maxlength">
+                Site must be less than 50 characters
+              </div>
+            </div>
+            <div class="mb-1">Site:</div>
+            <input type="text" formControlName="site" class="w-100 form-control"/>
+          </label>
+        </div>
+        <div>
+          <label class="col-md-12">
+            <div *ngIf="subject.invalid && (subject.dirty || subject.touched)" class="alert-danger float-right mb-1">
+              <div *ngIf="subject.errors.required">
+                Subject is required
+              </div>
+              <div *ngIf="subject.errors.maxlength">
+                Subject must be less that 250 characters
+              </div>
+            </div>
+            <div class="mb-1">Subject:</div>
+            <input type="text" formControlName="subject" class="form-control"/>
+          </label>
+        </div>
+        <div>
+          <label class="col-md-12">
+            <div class="mb-1">Description:</div>
+            <textarea formControlName="description" class="form-control" rows="4"></textarea>
+          </label>
+        </div>
+        <p-footer>
+          <div class="col-md-12">
+            <button type="button" class="btn btn-primary" [ngClass]="{'disabled': !newCaseForm.valid}"
+                    [disabled]="!newCaseForm.valid"
+                    (click)="submitCaseForm()">Submit
+            </button>
+            <button type="button" class="btn btn-primary" (click)="hideCaseForm()">Cancel</button>
+          </div>
+        </p-footer>
+      </div>
+    </form>
+  </p-dialog>
+</div>

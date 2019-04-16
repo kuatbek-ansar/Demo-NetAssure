@@ -1,0 +1,70 @@
+<div class="card" *ngIf="!isLoading">
+  <div class="card-header">
+    Create Invoice
+  </div>
+  <div class="card-body">
+    <div class="row form-group">
+      <div class="col-md-2 col-form-label text-left">
+        Group
+      </div>
+      <div class="col-md-3">
+        <invoice-group-selector (onChange)="onGroupChange($event)"></invoice-group-selector>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-md-2 col-form-label text-left">
+        Date
+      </div>
+      <div class="col-md-3">
+        <p-calendar inputStyleClass="form-control" dateFormat="yy-mm-dd" [(ngModel)]="date"></p-calendar>
+      </div>
+    </div>
+    <div class="row">
+      <h3 class="col-md-8">Monitoring Costs</h3>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        <invoice-monitoring-costs [groupId]="groupId" [date]="date" (totalUpdated)="onMonitoringTotalUpdate($event)"></invoice-monitoring-costs>
+      </div>
+    </div>
+    <div class="row">
+      <h3 class="col-md-8">Monitoring Appliance Costs</h3>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        <invoice-appliance-costs [groupId]="groupId" (totalUpdated)="onApplianceTotalUpdate($event)"></invoice-appliance-costs>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1 offset-md-6">
+          Monitoring
+        </div>
+        <div class="col-md-1">
+            {{monitoringTotal | currency}}
+        </div>
+      </div>
+    <div class="row">
+      <div class="col-md-1 offset-md-6">
+        Appliances
+      </div>
+      <div class="col-md-1">
+          {{applianceTotal | currency}}
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1 offset-md-6">
+          <b>Total</b>
+        </div>
+        <div class="col-md-1">
+            {{applianceTotal + monitoringTotal |currency}}
+        </div>
+      </div>
+    <div class="row">
+      <div class="offset-md-7 col-md-1">
+        <div style="float: right">
+          <button class="btn btn-success" (click)="save()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

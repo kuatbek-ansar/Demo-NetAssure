@@ -1,0 +1,7 @@
+.filters-label, .filters-severity {
+  font-weight: 700;
+}
+
+.filters-annotation {
+  text-align: right;
+}

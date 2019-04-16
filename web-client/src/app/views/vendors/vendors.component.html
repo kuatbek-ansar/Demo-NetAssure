@@ -1,0 +1,280 @@
+<div class="animated fadeIn">
+  <app-no-data *ngIf="!isLoading"
+               [dataExists]="vendors?.length > 0" message="vendors">
+  </app-no-data>
+  <div class="card" *ngIf="!isLoading">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3">
+          <button type="button" class="btn btn-primary float-right mb-3" data-toggle="modal"
+                  (click)="openVendorCreateModal(vendorCreateModal)">
+            Create
+          </button>
+          <table class="table table-striped table-clickable" *ngIf="vendors.length > 0">
+            <thead>
+            <tr>
+              <th class="text-center">Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let vendor of vendors" (click)="onVendorRowClicked(vendor)">
+              <td [ngClass]="{'selected': vendor.name === selectedVendor.name}">{{vendor.name}}
+                <button  class="btn btn-default btn-sm float-right"
+                        (click)="openVendorCreateModal(vendorCreateModal, vendor); $event.stopPropagation();">Edit
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-9" *ngIf="selectedVendor">
+          <div class="card">
+            <div class="card-header">{{selectedVendor.name}}</div>
+            <div class="card-body">
+              <tabset>
+                <tab>
+                  <ng-template tabHeading>
+                    <i class="fa fa-legal"></i> MSA
+                  </ng-template>
+                  <button type="button" class="btn btn-primary float-right mb-3"
+                          (click)="openUploadFileModal('MSA', uploadFileModal)">
+                    Upload MSA
+                  </button>
+                  <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th class="text-center">Has SLA?</th>
+                      <th class="text-center">File</th>
+                      <th class="text-center">Date Uploaded</th>
+                      <th class="text-center">Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let agreement of msaFiles">
+                      <td class="text-center" *ngIf="agreement.HasSla">Yes</td>
+                      <td class="text-center" *ngIf="!agreement.HasSla">No</td>
+
+                      <td class="text-center">
+                        <button type="button" class="btn btn-success" (click)="downloadDocument(agreement)" title="Download">
+                          <i class="icon-cloud-download icons"></i> {{agreement.FileName}}
+                        </button>
+                      </td>
+                      <td class="text-center">{{agreement.UploadedDate | date:'medium'}}</td>
+                      <td class="text-center">
+                        <p-toggleButton onLabel="" offLabel=""
+                                        [(ngModel)]="agreement.confirmDelete"
+                                        (onChange)="deleteFile(!$event.checked, agreement)"
+                                        onIcon="fa fa-trash"
+                                        offIcon="fa fa-remove">
+                        </p-toggleButton>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </tab>
+                <tab>
+                  <ng-template tabHeading>
+                    <i class="icon-docs"></i> SO
+                  </ng-template>
+                  <button type="button" class="btn btn-primary float-right mb-3" data-toggle="modal"
+                          (click)="openUploadFileModal('SO', uploadFileModal)">
+                    Upload SO
+                  </button>
+                  <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th class="text-center">Has SLA?</th>
+                      <th class="text-center">File</th>
+                      <th class="text-center">Date Uploaded</th>
+                      <th class="text-center">Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let agreement of soFiles">
+                      <td class="text-center" *ngIf="agreement.HasSla">Yes</td>
+                      <td class="text-center" *ngIf="!agreement.HasSla">No</td>
+
+                      <td class="text-center">
+                        <a [href]="agreement.Location">{{agreement.FileName}}</a>
+                      </td>
+                      <td class="text-center">{{agreement.UploadedDate | date:'medium'}}</td>
+                      <td class="text-center">
+                        <p-toggleButton onLabel="" offLabel=""
+                                        [(ngModel)]="agreement.confirmDelete"
+                                        (onChange)="deleteFile(!$event.checked, agreement)"
+                                        onIcon="fa fa-trash"
+                                        offIcon="fa fa-remove">
+                        </p-toggleButton>
+                    </tr>
+                    </tbody>
+                  </table>
+                </tab>
+                <tab>
+                  <ng-template tabHeading>
+                    <i class="icon-docs"></i> LOA
+                  </ng-template>
+                  <button type="button" class="btn btn-primary float-right mb-3" data-toggle="modal"
+                          (click)="openUploadFileModal('LOA', uploadFileModal)">
+                    Upload LOA
+                  </button>
+                  <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th class="text-center">Has SLA?</th>
+                      <th class="text-center">File</th>
+                      <th class="text-center">Date Uploaded</th>
+                      <th class="text-center">Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let agreement of loaFiles">
+                      <td class="text-center" *ngIf="agreement.HasSla">Yes</td>
+                      <td class="text-center" *ngIf="!agreement.HasSla">No</td>
+
+                      <td class="text-center">
+                        <a [href]="agreement.Location">{{agreement.FileName}}</a>
+                      </td>
+                      <td class="text-center">{{agreement.UploadedDate | date:'medium'}}</td>
+                      <td class="text-center">
+                        <p-toggleButton onLabel="" offLabel=""
+                                        [(ngModel)]="agreement.confirmDelete"
+                                        (onChange)="deleteFile(!$event.checked, agreement)"
+                                        onIcon="fa fa-trash"
+                                        offIcon="fa fa-remove">
+                        </p-toggleButton>
+                    </tr>
+                    </tbody>
+                  </table>
+                </tab>
+                <tab>
+                  <ng-template tabHeading>
+                    <i class="icon-docs"></i> Invoices
+                  </ng-template>
+                  <button type="button" class="btn btn-primary float-right mb-3" data-toggle="modal"
+                          (click)="openUploadFileModal('Invoice', uploadFileModal)">
+                    Upload Invoice
+                  </button>
+                  <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th class="text-center">File</th>
+                      <th class="text-center">Date Uploaded</th>
+                      <th class="text-center">Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let invoice of invoices">
+                      <td class="text-center">
+                        <a [href]="invoice.Location">{{invoice.FileName}}</a>
+                      </td>
+                      <td class="text-center">{{invoice.UploadedDate | date:'medium'}}</td>
+                      <td class="text-center">
+                        <p-toggleButton onLabel="" offLabel=""
+                                        [(ngModel)]="invoice.confirmDelete"
+                                        (onChange)="deleteFile(!$event.checked, invoice)"
+                                        onIcon="fa fa-trash"
+                                        offIcon="fa fa-remove">
+                        </p-toggleButton>
+                    </tr>
+                    </tbody>
+                  </table>
+                </tab>
+              </tabset>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- .modal -->
+<ng-template #vendorCreateModal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Create/Edit Vendor</h4>
+      <button type="button" class="close" (click)="closeVendorCreateModal()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="vendor-name">Name</label>
+        <div class="col-md-9">
+            <p-autoComplete name="vendor-name"
+            [suggestions]="filteredKnownVendors"
+            [(ngModel)]="createdVendor.name"
+            (completeMethod)="filterKnownVendors($event)"
+            (keyup.enter)="createVendor()"></p-autoComplete>
+
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button *ngIf="createdVendor.id > 0" type="button" class="btn btn-danger mr-auto"
+              (click)="deleteVendor(createdVendor)">Delete
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="closeVendorCreateModal()">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="createVendor()">Save</button>
+    </div>
+  </div>
+</ng-template>
+<!-- /.modal -->
+
+<!-- .modal -->
+<ng-template #uploadFileModal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Upload {{fileType}} for {{selectedVendor?.name}}</h4>
+      <button type="button" class="close" (click)="closeFileUploadModal()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group row">
+        <label class="col-md-4 col-form-label" for="file-has-sla">File Name (
+          <i>optional</i>)</label>
+        <input class="col-md-6" type="text" [(ngModel)]="fileName" name="Name"/>
+      </div>
+      <div class="form-group row">
+        <span class="col-md-2"></span>
+        <input class="col-md-8" type="file" name="myFile" (change)="fileChange($event)"
+        />
+      </div>
+      <div class="form-group row" *ngIf="fileType != 'Invoice'">
+        <label class="col-md-3 col-form-label" for="file-has-sla">Has SLA?</label>
+        <div class="col-md-3">
+          <input [checked]="hasSLA" (change)="hasSLA = !hasSLA" type="checkbox" class="form-control mt-2"
+                 id="file-has-sla" name="file-has-sla"
+          />
+        </div>
+      </div>
+      <div *ngIf="hasSLA">
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="sla-latency">Latency</label>
+          <div class="col-md-3">
+            <input type="text" class="form-control" id="sla-latency" name="sla-latency"/>
+          </div>
+          <label class="col-md-3 col-form-label" for="sla-availability">Availability</label>
+          <div class="col-md-3">
+            <input type="text" class="form-control" id="sla-availability" name="sla-availability"/>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="sla-throughput">Throughput</label>
+          <div class="col-md-3">
+            <input type="text" class="form-control" id="sla-throughput" name="sla-throughput"/>
+          </div>
+          <label class="col-md-3 col-form-label" for="sla-packet-loss">Packet Loss</label>
+          <div class="col-md-3">
+            <input type="text" class="form-control" id="sla-packet-loss" name="sla-packet-loss"/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeFileUploadModal()">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="uploadFile(fileType)">Save Changes</button>
+    </div>
+  </div>
+</ng-template>
+<!-- /.modal -->

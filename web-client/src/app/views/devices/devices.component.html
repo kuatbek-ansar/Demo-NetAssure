@@ -1,0 +1,225 @@
+<div class="animated fadeIn">
+  <app-no-data *ngIf="!isLoading" [dataExists]="devices?.length > 0" message="devices">
+  </app-no-data>
+  <div class="row" *ngIf="devices?.length > 0 && !isLoading">
+    <div class="col-md-4">
+      <div class="card" *ngIf="devices?.length > 0">
+        <div class="card-header">
+          Network Devices Status
+        </div>
+        <div class="card-body">
+          <canvas baseChart class="chart" [data]="networkDevicesPieChartData" [labels]="networkDevicesPieChartLabels"
+                  [colors]="networkDevicesPieChartColors"
+                  [chartType]="networkDevicesPieChartType" (chartHover)="networkDevicesPieChartHovered($event)"
+                  (chartClick)="networkDevicesPieChartClicked($event)"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <i class="icon-list"></i> Devices
+        </div>
+        <div class="card-body">
+          <device-list [devices]="devices" [selectedDevice]="selectedDevice"
+                       (selectDevices)="changeDevice($event)"
+                       (editMultiple)="editMultipleDevices($event)"></device-list>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="animated fadeIn" *ngIf="devices?.length > 0 && !isLoading">
+  <tabset>
+    <tab>
+      <ng-template tabHeading>
+        <i class="icon-magnifier"></i> Details
+      </ng-template>
+      <div *ngIf="selectedDevice" class="card">
+        <div class="card-header">
+          {{selectedDevice.displayName}}
+        </div>
+        <div class="card-body">
+          <div class="m-3">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-lg-4 col-md-5 col-form-label">Status</label>
+                  <div class="col-lg-8 col-md-7">
+                    <p *ngIf="!selectedDevice.HasActiveNotifications" class="form-control-static"
+                       class="badge badge-pill badge-success">&nbsp;</p>
+                    <p *ngIf="selectedDevice.HasActiveNotifications" class="form-control-static"
+                       class="badge badge-pill badge-danger">&nbsp;</p>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-md-5 col-form-label">Host Name</label>
+                  <div class="col-lg-8 col-md-7">
+                    <p class="form-control-static">{{selectedDevice.internalName}}</p>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-md-5 col-form-label">IP Address</label>
+                  <div class="col-lg-8 col-md-7">
+                    <p class="form-control-static">{{selectedDevice.ipAddress}}</p>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-md-5 col-form-label">Model</label>
+                  <div class="col-lg-8 col-md-7">
+                    <p *ngIf="selectedDevice.managedDevice.isManaged" class="form-control-static">
+                      {{selectedDevice.model}}</p>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-md-5 col-form-label">Operating System</label>
+                  <div class="col-lg-8 col-md-7">
+                    <p *ngIf="selectedDevice.managedDevice.isManaged" class="form-control-static">
+                      {{selectedDevice.operatingSystem}}</p>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-md-5 col-form-label">Serial Number</label>
+                  <div class="col-lg-8 col-md-7">
+                    <p *ngIf="selectedDevice.managedDevice.isManaged" class="form-control-static">
+                      {{selectedDevice.serialNumberA}}</p>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-md-5 col-form-label">Hardware</label>
+                  <div class="col-lg-8 col-md-7">
+                    <p *ngIf="selectedDevice.managedDevice.isManaged" class="form-control-static">
+                      {{selectedDevice.hardware}}</p>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-md-5 col-form-label">Contact</label>
+                  <div class="col-lg-8 col-md-7">
+                    <p *ngIf="selectedDevice.managedDevice.isManaged" class="form-control-static">
+                      {{selectedDevice.contact | cleanString}}</p>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-md-5 col-form-label">Location</label>
+                  <div class="col-lg-8 col-md-7">
+                    <p *ngIf="selectedDevice.managedDevice.isManaged" class="form-control-static">
+                      {{selectedDevice.locationDescription | cleanString}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-lg-4 col-md-5 col-form-label">Is Managed?</label>
+                  <div class="col-lg-8 col-md-7">
+                    <label class="switch switch-text switch-pill switch-success">
+                      <input id="managedCheck" type="checkbox" class="switch-input"
+                             [disabled]="selectedDevice.disableManagementButton"
+                             [(ngModel)]="selectedDevice.managedDevice.isManaged"
+                             (click)="onManagedChecked(selectedDevice)">
+                      <span class="switch-label" data-on="Yes" data-off="No"></span>
+                      <span class="switch-handle"></span>
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-md-5 col-form-label">Device Type</label>
+                  <div class="col-lg-8 col-md-7">
+                    <p *ngIf="selectedDevice.managedDevice.isManaged" class="form-control-static">
+                      {{selectedDevice.deviceType}}</p>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-md-5 col-form-label">Friendly Name</label>
+                  <div class="col-lg-8 col-md-7">
+                    <input *ngIf="selectedDevice.managedDevice.isManaged" class="form-control"
+                           [(ngModel)]="selectedDevice.displayName"/>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-md-5 col-form-label" for="text-input">Latitude</label>
+                  <div class="col-lg-8 col-md-7">
+                    <input *ngIf="selectedDevice.managedDevice.isManaged" class="form-control"
+                           [(ngModel)]="selectedDevice.geolocation.latitude"
+                    />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-md-5 col-form-label" for="text-input">Longitude</label>
+                  <div class="col-lg-8 col-md-7">
+                    <input *ngIf="selectedDevice.managedDevice.isManaged" class="form-control"
+                           [(ngModel)]="selectedDevice.geolocation.longitude"
+                    />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-md-5 col-form-label" for="text-input">Notes</label>
+                  <div class="col-lg-8 col-md-7">
+                    <textarea *ngIf="selectedDevice.managedDevice.isManaged" class="form-control" name="notes" rows="10"
+                              [(ngModel)]="selectedDevice.notes"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="text-center">
+            <button class="btn btn-primary" (click)="onSaveClicked()">Save Changes</button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="selectedDevice" class="card">
+        <div class="card-header">
+          <i class="icon-list"></i> Interfaces
+        </div>
+        <interface-list [selectedDevice]="selectedDevice" (updateDevice)="updateCurrentDevice()"></interface-list>
+      </div>
+    </tab>
+    <tab (select)="onNotificationsClick()">
+      <ng-template tabHeading>
+        <i class="icon-speech"></i> Notifications
+      </ng-template>
+      <app-device-notifications
+        [notifications]="notifications"
+        [isLoading]="notificationsAreLoading">
+      </app-device-notifications>
+    </tab>
+    <tab (select)="onChartsClick()">
+      <ng-template tabHeading>
+        <i class="icon-pie-chart"></i> Charts
+      </ng-template>
+      <app-widget-loading [isLoading]="chartsAreLoading"></app-widget-loading>
+      <div class="card" *ngIf="!chartsAreLoading">
+        <div class="card-header">
+          <div class="form-group row mb-0">
+            <label class="col-form-label col-md-3 col-lg-2" for="">Select a Chart</label>
+            <div class="col-md-4 col-lg-3">
+              <select class="form-control" id="chartSelector" (change)="onChartClicked($event.target.value)">
+                <option value=""></option>
+                <option *ngFor="let graph of selectedDeviceGraphs; let i = index" [value]="i">{{graph.name}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <app-device-chart [graph]="selectedGraph"></app-device-chart>
+        </div>
+      </div>
+    </tab>
+    <tab (select)="onBackupsClick()">
+      <ng-template tabHeading>
+        <i class="icon-reload"></i> Backups
+      </ng-template>
+      <app-backups [deviceId]="selectedDevice.zabbixHostId" [deviceIp]="selectedDevice.ipAddress">
+      </app-backups>
+    </tab>
+    <tab *ngIf="showSNMP">
+        <ng-template tabHeading>
+          <i class="icon-settings"></i> SNMP Config
+        </ng-template>
+        <device-snmp-config [selectedDeviceId]="selectedDevice.zabbixHostId">
+        </device-snmp-config>
+      </tab>
+  </tabset>
+</div>

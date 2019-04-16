@@ -1,0 +1,44 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">Edit Multiple</h4>
+    <button type="button" class="close" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group row">
+      <label class="col-lg-4 col-md-5 col-form-label">Is Managed?</label>
+      <div class="col-lg-8 col-md-7">
+        <label class="switch switch-text switch-pill switch-success">
+          <input id="managedCheck" type="checkbox" class="switch-input" [(ngModel)]="model.isManaged">
+          <span class="switch-label" data-on="Yes" data-off="No"></span>
+          <span class="switch-handle"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-lg-4 col-md-5 col-form-label" for="text-input">Latitude</label>
+      <div class="col-lg-7 col-md-6">
+        <input class="form-control" type="number" [(ngModel)]="model.latitude">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-4 col-md-5 col-form-label" for="text-input">Longitude</label>
+      <div class="col-lg-7 col-md-6">
+        <input class="form-control" type="number" [(ngModel)]="model.longitude">
+      </div>
+
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-4 col-md-5 col-form-label" for="text-input">Notes</label>
+      <div class="col-lg-7 col-md-6">
+        <textarea class="form-control" name="notes" rows="10" [(ngModel)]="model.notes"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="close()">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="save()">Save
+      </button>
+    </div>
+  </div>
