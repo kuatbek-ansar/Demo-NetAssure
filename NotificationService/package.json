@@ -18,7 +18,7 @@
     "reflect-metadata": "^0.1.12",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5",
-    "serverless": "^1.26.1",
+    "serverless": "^2.1.0",
     "typedi": "^0.6.1"
   },
   "devDependencies": {
