@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:21.2-alpine3.18
 
 ENV JAVA_HOME=/usr/lib/jvm/jre
 ENV PATH $PATH:$JAVA_HOME/bin
