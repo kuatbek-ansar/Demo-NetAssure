@@ -16,9 +16,9 @@
     "applicationinsights": "^1.0.1",
     "aws-sdk": "^2.203.0",
     "reflect-metadata": "^0.1.12",
-    "request": "^2.83.0",
+    "request": "^2.88.2",
     "request-promise-native": "^1.0.5",
-    "serverless": "^1.26.1",
+    "serverless": "^4.0.0",
     "typedi": "^0.6.1"
   },
   "devDependencies": {
