@@ -57,7 +57,7 @@
     "ng2-select": "^1.2.0",
     "ngx-bootstrap": "^2.0.0-beta.9",
     "ngx-quill": "^1.6.0",
-    "node-sass": "^4.7.2",
+    "node-sass": "^7.0.2",
     "popper.js": "^1.13.0",
     "primeng": "^5.2.0",
     "primeui": "^4.1.15",
