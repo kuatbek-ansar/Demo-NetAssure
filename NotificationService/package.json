@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "ajv": "^6.2.0",
-    "applicationinsights": "^1.0.1",
-    "aws-sdk": "^2.203.0",
+    "applicationinsights": "^2.7.1",
+    "aws-sdk": "^2.275.1",
     "reflect-metadata": "^0.1.12",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5",
