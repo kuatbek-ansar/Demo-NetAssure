@@ -27,7 +27,7 @@
     "swagger-ui-express": "^2.0.13",
     "ts-node": "^3.3.0",
     "typedi": "^0.5.2",
-    "typeorm": "^0.1.11",
+    "typeorm": "^0.2.27",
     "typescript": "^2.7.1",
     "typescript-rest": "^1.2.1",
     "typescript-rest-swagger": "0.0.13",
