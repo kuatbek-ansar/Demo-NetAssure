@@ -17,7 +17,7 @@
     "memory-cache": "^0.2.0",
     "moment": "^2.20.1",
     "morgan": "^1.9.0",
-    "multer": "^1.3.0",
+    "multer": "^2.0.1",
     "multer-s3": "^2.7.0",
     "mysql": "^2.15.0",
     "pdfkit": "^0.8.3",
@@ -30,7 +30,7 @@
     "typeorm": "^0.1.11",
     "typescript": "^2.7.1",
     "typescript-rest": "^1.2.1",
-    "typescript-rest-swagger": "0.0.13",
+    "typescript-rest-swagger": "1.1.2",
     "typescript-string-operations": "^1.2.4",
     "voilab-pdf-table": "^0.4.0",
     "xml2js": "^0.4.19"
